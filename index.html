@@ -577,7 +577,7 @@
                 const reflectionSubtext = sessionCompleted
                     ? "Did it move you forward?"
                     : "Was it the task or your focus?";
-
+            
                 return (
                     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
                         <div className="max-w-md w-full space-y-8">
@@ -586,40 +586,54 @@
                                 <p className="text-gray-500 font-light">{reflectionSubtext}</p>
                             </div>
                             
-                            <div className="flex justify-center space-x-6">
+                            <div className="space-y-3">
                                 <button
                                     onClick={() => setReflectionStatus('progress')}
-                                    className={`text-5xl transition-transform ${
-                                        reflectionStatus === 'progress' ? 'scale-125' : 'opacity-30 hover:opacity-50'
+                                    className={`w-full text-left px-6 py-4 border transition-all ${
+                                        reflectionStatus === 'progress' 
+                                            ? 'border-black bg-black text-white' 
+                                            : 'border-gray-200 hover:border-gray-400'
                                     }`}
                                 >
-                                    ✅
+                                    <div className="font-light text-base">
+                                        I worked on my one thing
+                                    </div>
                                 </button>
+                                
                                 <button
                                     onClick={() => setReflectionStatus('neutral')}
-                                    className={`text-5xl transition-transform ${
-                                        reflectionStatus === 'neutral' ? 'scale-125' : 'opacity-30 hover:opacity-50'
+                                    className={`w-full text-left px-6 py-4 border transition-all ${
+                                        reflectionStatus === 'neutral' 
+                                            ? 'border-black bg-black text-white' 
+                                            : 'border-gray-200 hover:border-gray-400'
                                     }`}
                                 >
-                                    😐
+                                    <div className="font-light text-base">
+                                        I worked on something else
+                                    </div>
                                 </button>
+                                
                                 <button
                                     onClick={() => setReflectionStatus('failed')}
-                                    className={`text-5xl transition-transform ${
-                                        reflectionStatus === 'failed' ? 'scale-125' : 'opacity-30 hover:opacity-50'
+                                    className={`w-full text-left px-6 py-4 border transition-all ${
+                                        reflectionStatus === 'failed' 
+                                            ? 'border-black bg-black text-white' 
+                                            : 'border-gray-200 hover:border-gray-400'
                                     }`}
                                 >
-                                    ❌
+                                    <div className="font-light text-base">
+                                        Today was out of my control
+                                    </div>
                                 </button>
                             </div>
                             
                             {reflectionStatus && (
-                                <div className="space-y-4">
+                                <div className="space-y-4 pt-4">
                                     <input
                                         type="text"
                                         value={reflectionNote}
                                         onChange={(e) => setReflectionNote(e.target.value)}
-                                        placeholder="One sentence reflection (optional)"
+                                        placeholder="One sentence (optional)"
                                         className="w-full text-center text-lg font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
                                     />
                                     
