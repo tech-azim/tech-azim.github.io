@@ -83,6 +83,42 @@
                 if (!hasSetGoalBefore) {
                     setIsFirstGoal(true);
                 }
+            
+                // 🔴 NEW: Resume active session if exists
+                const sessionStartTime = localStorage.getItem('focus_session_start_time');
+                const sessionDuration = localStorage.getItem('focus_session_duration');
+                const sessionTask = localStorage.getItem('focus_session_task');
+                
+                if (sessionStartTime && sessionDuration && sessionTask) {
+                    const startTime = parseInt(sessionStartTime);
+                    const duration = parseInt(sessionDuration);
+                    const now = Date.now();
+                    const elapsedSeconds = Math.floor((now - startTime) / 1000);
+                    const totalSeconds = duration * 60;
+                    const remaining = totalSeconds - elapsedSeconds;
+                    
+                    setDailyTask(sessionTask);
+                    setEstimatedTime(duration);
+                    
+                    if (remaining > 0) {
+                        // Session still active - resume
+                        setTimeLeft(remaining);
+                        setTimerActive(true);
+                        setSessionCompleted(false);
+                        setScreen('focus');
+                    } else {
+                        // Session already finished - go to reflection
+                        setTimeLeft(0);
+                        setTimerActive(false);
+                        setSessionCompleted(true);
+                        setScreen('reflection');
+                        
+                        // Clean up session data
+                        localStorage.removeItem('focus_session_start_time');
+                        localStorage.removeItem('focus_session_duration');
+                        localStorage.removeItem('focus_session_task');
+                    }
+                }
             }, []);
 
             // Timer countdown
@@ -142,13 +178,16 @@
                 setShowEndWarning(false);
                 setSessionCompleted(false);
                 
-                // Haptic feedback on focus start
-                hapticFeedback('heavy');
+                // 🔴 NEW: Store session start data
+                localStorage.setItem('focus_session_start_time', Date.now().toString());
+                localStorage.setItem('focus_session_duration', estimatedTime.toString());
+                localStorage.setItem('focus_session_task', task);
                 
+                hapticFeedback('heavy');
                 setScreen('focus');
             };
 
-            const handleEndSession = () => {
+          const handleEndSession = () => {
                 const wasCompleted = timeLeft === 0;
                 const minutesPlanned = estimatedTime;
                 const minutesDone = Math.floor((estimatedTime * 60 - timeLeft) / 60);
@@ -160,6 +199,12 @@
                 } else {
                     setTimerActive(false);
                     setSessionCompleted(wasCompleted);
+                    
+                    // 🔴 NEW: Clear session data when ending
+                    localStorage.removeItem('focus_session_start_time');
+                    localStorage.removeItem('focus_session_duration');
+                    localStorage.removeItem('focus_session_task');
+                    
                     setScreen('reflection');
                 }
             };
@@ -168,7 +213,6 @@
                 const today = new Date().toISOString().split('T')[0];
                 const weeklyData = JSON.parse(localStorage.getItem('focus_weekly_data') || '[]');
                 
-                // 🔴 FIX: Prevent duplicate entries for same day
                 const filteredData = weeklyData.filter(d => d.date !== today);
                 
                 filteredData.push({
@@ -184,8 +228,10 @@
                 localStorage.setItem('focus_last_session_date', today);
                 localStorage.setItem('focus_completed_task', dailyTask);
                 
-                // Don't clear task anymore - it stays as "completed"
-                // localStorage.removeItem('focus_daily_task');
+                // 🔴 NEW: Clear active session data
+                localStorage.removeItem('focus_session_start_time');
+                localStorage.removeItem('focus_session_duration');
+                localStorage.removeItem('focus_session_task');
                 
                 setTodayCompleted(true);
                 setCompletedTask(dailyTask);
