@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCUS - One Goal, One Thing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const FocusApp = () => {
+            const [screen, setScreen] = useState('home');
+            const [goal, setGoal] = useState('');
+            const [goalInput, setGoalInput] = useState('');
+            const [dailyTask, setDailyTask] = useState('');
+            const [taskInput, setTaskInput] = useState('');
+            const [estimatedTime, setEstimatedTime] = useState(25);
+            const [timerActive, setTimerActive] = useState(false);
+            const [timeLeft, setTimeLeft] = useState(25 * 60);
+            const [reflectionStatus, setReflectionStatus] = useState(null);
+            const [reflectionNote, setReflectionNote] = useState('');
+            const [showEndWarning, setShowEndWarning] = useState(false);
+            const [isFirstGoal, setIsFirstGoal] = useState(false);
+
+            // Load saved data
+            useEffect(() => {
+                const savedGoal = localStorage.getItem('focus_goal');
+                const savedDailyTask = localStorage.getItem('focus_daily_task');
+                const hasSetGoalBefore = localStorage.getItem('focus_has_set_goal');
+                
+                if (savedGoal) {
+                    setGoal(savedGoal);
+                    setGoalInput(savedGoal);
+                }
+                if (savedDailyTask) {
+                    setDailyTask(savedDailyTask);
+                    setTaskInput(savedDailyTask);
+                }
+                if (!hasSetGoalBefore) {
+                    setIsFirstGoal(true);
+                }
+            }, []);
+
+            // Timer countdown
+            useEffect(() => {
+                let interval = null;
+                if (timerActive && timeLeft > 0) {
+                    interval = setInterval(() => {
+                        setTimeLeft(time => time - 1);
+                    }, 1000);
+                } else if (timeLeft === 0) {
+                    setTimerActive(false);
+                    setScreen('reflection');
+                }
+                return () => clearInterval(interval);
+            }, [timerActive, timeLeft]);
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            const saveGoal = () => {
+                setGoal(goalInput);
+                localStorage.setItem('focus_goal', goalInput);
+                localStorage.setItem('focus_has_set_goal', 'true');
+                setIsFirstGoal(false);
+                setScreen('home');
+            };
+
+            const startFocus = () => {
+                const task = taskInput.trim() || dailyTask;
+                setDailyTask(task);
+                localStorage.setItem('focus_daily_task', task);
+                setTimeLeft(estimatedTime * 60);
+                setTimerActive(true);
+                setShowEndWarning(false);
+                setScreen('focus');
+            };
+
+            const handleEndSession = () => {
+                if (!showEndWarning) {
+                    setShowEndWarning(true);
+                } else {
+                    setTimerActive(false);
+                    setScreen('reflection');
+                }
+            };
+
+            const saveReflection = (status) => {
+                const today = new Date().toISOString().split('T')[0];
+                const weeklyData = JSON.parse(localStorage.getItem('focus_weekly_data') || '[]');
+                
+                weeklyData.push({
+                    date: today,
+                    task: dailyTask,
+                    status: status,
+                    note: reflectionNote,
+                    duration: estimatedTime
+                });
+                
+                localStorage.setItem('focus_weekly_data', JSON.stringify(weeklyData));
+                setDailyTask('');
+                setTaskInput('');
+                localStorage.removeItem('focus_daily_task');
+                setReflectionStatus(null);
+                setReflectionNote('');
+                setScreen('home');
+            };
+
+            const getWeeklyStats = () => {
+                const weeklyData = JSON.parse(localStorage.getItem('focus_weekly_data') || '[]');
+                const lastWeek = weeklyData.slice(-7);
+                
+                const focused = lastWeek.filter(d => d.status === 'progress').length;
+                const distracted = lastWeek.filter(d => d.status === 'failed').length;
+                const total = lastWeek.length;
+                
+                return { focused, distracted, total, data: lastWeek };
+            };
+
+            const getWeeklyTruth = (stats) => {
+                if (stats.total === 0) {
+                    return "No data yet. Start today.";
+                }
+                
+                if (stats.focused === 0) {
+                    return "Your goal is still imaginary.";
+                }
+                
+                if (stats.focused === 1 || stats.focused === 2) {
+                    return "You are busy, not committed.";
+                }
+                
+                if (stats.focused >= 3 && stats.focused < 5) {
+                    return "Progress. But can you sustain it?";
+                }
+                
+                if (stats.focused >= 5) {
+                    return "You're building momentum.";
+                }
+                
+                return "Keep going.";
+            };
+
+            // GOAL SCREEN
+            if (screen === 'goal') {
+                return (
+                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-8">
+                            {isFirstGoal && (
+                                <div className="text-center mb-8">
+                                    <p className="text-sm text-gray-500 font-light italic">
+                                        This will take time. That's the point.
+                                    </p>
+                                </div>
+                            )}
+                            
+                            <div className="text-center">
+                                <h2 className="text-2xl font-light mb-2">What do you want?</h2>
+                                <p className="text-gray-500 font-light">Be specific.</p>
+                            </div>
+                            
+                            <textarea
+                                value={goalInput}
+                                onChange={(e) => setGoalInput(e.target.value)}
+                                placeholder="Example: Become interview-ready as a fullstack developer"
+                                className="w-full text-center text-xl font-light border-2 border-gray-200 focus:border-black outline-none p-4 min-h-[120px] resize-none placeholder-gray-300"
+                                autoFocus
+                            />
+                            
+                            <button
+                                onClick={saveGoal}
+                                disabled={!goalInput.trim()}
+                                className="w-full py-4 bg-black text-white disabled:bg-gray-200 disabled:text-gray-400 transition-colors"
+                            >
+                                Set Goal
+                            </button>
+                            
+                            {goal && (
+                                <button
+                                    onClick={() => setScreen('home')}
+                                    className="w-full py-3 text-gray-500 hover:text-black transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // HOME SCREEN
+            if (screen === 'home') {
+                return (
+                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-12">
+                            <div className="text-center space-y-4">
+                                <p className="text-sm text-gray-400 uppercase tracking-wider">Your Goal</p>
+                                {goal ? (
+                                    <>
+                                        <h1 className="text-3xl font-light leading-tight px-4">{goal}</h1>
+                                        <button
+                                            onClick={() => {
+                                                setGoalInput(goal);
+                                                setScreen('goal');
+                                            }}
+                                            className="text-sm text-gray-400 hover:text-black transition-colors"
+                                        >
+                                            Change
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        onClick={() => setScreen('goal')}
+                                        className="text-3xl font-light text-gray-300 hover:text-black transition-colors"
+                                    >
+                                        Set your goal
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className="text-center space-y-6">
+                                <p className="text-sm text-gray-400 uppercase tracking-wider">Today's One Thing</p>
+                                {dailyTask && !taskInput ? (
+                                    <>
+                                        <p className="text-xl font-light px-4">{dailyTask}</p>
+                                        <button
+                                            onClick={startFocus}
+                                            className="w-full py-4 bg-black text-white text-lg font-light hover:bg-gray-800 transition-colors"
+                                        >
+                                            Start
+                                        </button>
+                                    </>
+                                ) : (
+                                    <div className="space-y-4">
+                                        <input
+                                            type="text"
+                                            value={taskInput}
+                                            onChange={(e) => setTaskInput(e.target.value)}
+                                            placeholder="What's the one thing you'll do today?"
+                                            className="w-full text-center text-xl font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
+                                        />
+                                        
+                                        <div className="flex items-center justify-center space-x-4">
+                                            <label className="text-sm text-gray-500">Estimated time:</label>
+                                            <select
+                                                value={estimatedTime}
+                                                onChange={(e) => setEstimatedTime(Number(e.target.value))}
+                                                className="text-lg font-light border-b border-gray-300 focus:border-black outline-none"
+                                            >
+                                                <option value={15}>15 min</option>
+                                                <option value={25}>25 min</option>
+                                                <option value={45}>45 min</option>
+                                                <option value={60}>60 min</option>
+                                                <option value={90}>90 min</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <button
+                                            onClick={startFocus}
+                                            disabled={!taskInput.trim()}
+                                            className="w-full py-4 bg-black text-white disabled:bg-gray-200 disabled:text-gray-400 transition-colors"
+                                        >
+                                            Begin
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="flex justify-center">
+                                <button
+                                    onClick={() => setScreen('weekly')}
+                                    className="text-sm text-gray-400 hover:text-black transition-colors uppercase tracking-wider"
+                                >
+                                    Weekly Truth
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // FOCUS SCREEN
+            if (screen === 'focus') {
+                const progress = ((estimatedTime * 60 - timeLeft) / (estimatedTime * 60)) * 100;
+                
+                return (
+                    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-16">
+                            {/* Goal reminder - subtle but present */}
+                            <div className="text-center">
+                                <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">For your goal:</p>
+                                <p className="text-sm text-gray-400 font-light">{goal}</p>
+                            </div>
+                            
+                            <div className="text-center space-y-8">
+                                <h2 className="text-2xl font-light px-8">{dailyTask}</h2>
+                                
+                                <div className="tabular-nums">
+                                    <p className="text-8xl font-extralight tracking-tight">
+                                        {formatTime(timeLeft)}
+                                    </p>
+                                </div>
+                                
+                                {/* Progress bar */}
+                                <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                                    <div 
+                                        className="h-full bg-white transition-all duration-1000 ease-linear"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="flex flex-col items-center space-y-6">
+                                <button
+                                    onClick={() => setTimerActive(!timerActive)}
+                                    className="px-8 py-3 border border-white hover:bg-white hover:text-black transition-colors"
+                                >
+                                    {timerActive ? 'Pause' : 'Resume'}
+                                </button>
+                                
+                                {/* End Session with warning */}
+                                <div className="flex flex-col items-center space-y-2">
+                                    {showEndWarning && (
+                                        <p className="text-sm text-gray-500 font-light">
+                                            Ending early won't bring you closer to your goal.
+                                        </p>
+                                    )}
+                                    <button
+                                        onClick={handleEndSession}
+                                        className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
+                                    >
+                                        {showEndWarning ? 'End Anyway' : 'End Session'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // REFLECTION SCREEN
+            if (screen === 'reflection') {
+                return (
+                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-8">
+                            <div className="text-center">
+                                <h2 className="text-2xl font-light mb-2">Good work.</h2>
+                                <p className="text-gray-500 font-light">How did it go?</p>
+                            </div>
+                            
+                            <div className="flex justify-center space-x-6">
+                                <button
+                                    onClick={() => setReflectionStatus('progress')}
+                                    className={`text-5xl transition-transform ${
+                                        reflectionStatus === 'progress' ? 'scale-125' : 'opacity-30 hover:opacity-50'
+                                    }`}
+                                >
+                                    ✅
+                                </button>
+                                <button
+                                    onClick={() => setReflectionStatus('neutral')}
+                                    className={`text-5xl transition-transform ${
+                                        reflectionStatus === 'neutral' ? 'scale-125' : 'opacity-30 hover:opacity-50'
+                                    }`}
+                                >
+                                    😐
+                                </button>
+                                <button
+                                    onClick={() => setReflectionStatus('failed')}
+                                    className={`text-5xl transition-transform ${
+                                        reflectionStatus === 'failed' ? 'scale-125' : 'opacity-30 hover:opacity-50'
+                                    }`}
+                                >
+                                    ❌
+                                </button>
+                            </div>
+                            
+                            {reflectionStatus && (
+                                <div className="space-y-4">
+                                    <input
+                                        type="text"
+                                        value={reflectionNote}
+                                        onChange={(e) => setReflectionNote(e.target.value)}
+                                        placeholder="One sentence reflection (optional)"
+                                        className="w-full text-center text-lg font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
+                                    />
+                                    
+                                    <button
+                                        onClick={() => saveReflection(reflectionStatus)}
+                                        className="w-full py-3 bg-black text-white hover:bg-gray-800 transition-colors"
+                                    >
+                                        Done
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            // WEEKLY TRUTH SCREEN
+            if (screen === 'weekly') {
+                const stats = getWeeklyStats();
+                const truth = getWeeklyTruth(stats);
+                
+                return (
+                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-12">
+                            <div className="text-center">
+                                <h2 className="text-2xl font-light mb-8">Weekly Truth</h2>
+                                
+                                <div className="space-y-6">
+                                    <div>
+                                        <p className="text-6xl font-light">{stats.focused}</p>
+                                        <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">Days Focused</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p className="text-4xl font-light text-gray-400">{stats.distracted}</p>
+                                        <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">Days Distracted</p>
+                                    </div>
+                                    
+                                    <div className="pt-6">
+                                        <p className="text-gray-600 font-light">{truth}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {stats.data.length > 0 && (
+                                <div className="space-y-3">
+                                    <p className="text-xs text-gray-400 uppercase tracking-wider">Recent Days</p>
+                                    {[...stats.data].reverse().map((day, i) => (
+                                        <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100">
+                                            <span className="text-sm text-gray-600">
+                                                {new Date(day.date).toLocaleDateString('en-US', { 
+                                                    weekday: 'short', 
+                                                    month: 'short', 
+                                                    day: 'numeric' 
+                                                })}
+                                            </span>
+                                            <span className="text-lg">
+                                                {day.status === 'progress' && '✅'}
+                                                {day.status === 'neutral' && '😐'}
+                                                {day.status === 'failed' && '❌'}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            
+                            <button
+                                onClick={() => setScreen('home')}
+                                className="w-full py-3 border-2 border-gray-200 text-gray-600 hover:border-black hover:text-black transition-colors"
+                            >
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return null;
+        };
+
+        ReactDOM.render(<FocusApp />, document.getElementById('app'));
+    </script>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</body>
+</html>
