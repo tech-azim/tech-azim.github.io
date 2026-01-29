@@ -33,22 +33,38 @@
             const [reflectionStatus, setReflectionStatus] = useState(null);
             const [reflectionNote, setReflectionNote] = useState('');
             const [showEndWarning, setShowEndWarning] = useState(false);
+            const [endWarningText, setEndWarningText] = useState('');
             const [isFirstGoal, setIsFirstGoal] = useState(false);
+            const [sessionCompleted, setSessionCompleted] = useState(true);
+            const [todayCompleted, setTodayCompleted] = useState(false);
+            const [completedTask, setCompletedTask] = useState('');
 
             // Load saved data
             useEffect(() => {
                 const savedGoal = localStorage.getItem('focus_goal');
                 const savedDailyTask = localStorage.getItem('focus_daily_task');
                 const hasSetGoalBefore = localStorage.getItem('focus_has_set_goal');
+                const lastSessionDate = localStorage.getItem('focus_last_session_date');
+                const today = new Date().toISOString().split('T')[0];
                 
                 if (savedGoal) {
                     setGoal(savedGoal);
                     setGoalInput(savedGoal);
                 }
-                if (savedDailyTask) {
-                    setDailyTask(savedDailyTask);
-                    setTaskInput(savedDailyTask);
+                
+                // Check if user already completed today
+                if (lastSessionDate === today) {
+                    const task = localStorage.getItem('focus_completed_task');
+                    setTodayCompleted(true);
+                    setCompletedTask(task || '');
+                } else {
+                    // New day - can set new task
+                    if (savedDailyTask) {
+                        setDailyTask(savedDailyTask);
+                        setTaskInput(savedDailyTask);
+                    }
                 }
+                
                 if (!hasSetGoalBefore) {
                     setIsFirstGoal(true);
                 }
@@ -63,6 +79,7 @@
                     }, 1000);
                 } else if (timeLeft === 0) {
                     setTimerActive(false);
+                    setSessionCompleted(true);
                     setScreen('reflection');
                 }
                 return () => clearInterval(interval);
@@ -82,6 +99,15 @@
                 setScreen('home');
             };
 
+            const resetGoalAndData = () => {
+                localStorage.removeItem('focus_weekly_data');
+                localStorage.removeItem('focus_last_session_date');
+                localStorage.removeItem('focus_completed_task');
+                setTodayCompleted(false);
+                setCompletedTask('');
+                setScreen('goal');
+            };
+
             const startFocus = () => {
                 const task = taskInput.trim() || dailyTask;
                 setDailyTask(task);
@@ -89,14 +115,21 @@
                 setTimeLeft(estimatedTime * 60);
                 setTimerActive(true);
                 setShowEndWarning(false);
+                setSessionCompleted(false);
                 setScreen('focus');
             };
 
             const handleEndSession = () => {
-                if (!showEndWarning) {
+                const wasCompleted = timeLeft === 0;
+                const minutesPlanned = estimatedTime;
+                const minutesDone = Math.floor((estimatedTime * 60 - timeLeft) / 60);
+                
+                if (!showEndWarning && !wasCompleted) {
                     setShowEndWarning(true);
+                    setEndWarningText(`You set aside ${minutesPlanned} minutes. You've done ${minutesDone}. Sure?`);
                 } else {
                     setTimerActive(false);
+                    setSessionCompleted(wasCompleted);
                     setScreen('reflection');
                 }
             };
@@ -110,13 +143,19 @@
                     task: dailyTask,
                     status: status,
                     note: reflectionNote,
-                    duration: estimatedTime
+                    duration: estimatedTime,
+                    completed: sessionCompleted
                 });
                 
                 localStorage.setItem('focus_weekly_data', JSON.stringify(weeklyData));
-                setDailyTask('');
-                setTaskInput('');
-                localStorage.removeItem('focus_daily_task');
+                localStorage.setItem('focus_last_session_date', today);
+                localStorage.setItem('focus_completed_task', dailyTask);
+                
+                // Don't clear task anymore - it stays as "completed"
+                // localStorage.removeItem('focus_daily_task');
+                
+                setTodayCompleted(true);
+                setCompletedTask(dailyTask);
                 setReflectionStatus(null);
                 setReflectionNote('');
                 setScreen('home');
@@ -134,24 +173,38 @@
             };
 
             const getWeeklyTruth = (stats) => {
-                if (stats.total === 0) {
+                const { focused, total } = stats;
+                
+                if (total === 0) {
                     return "No data yet. Start today.";
                 }
                 
-                if (stats.focused === 0) {
-                    return "Your goal is still imaginary.";
+                if (focused === 0) {
+                    return "Zero days focused. Your goal is still imaginary.";
                 }
                 
-                if (stats.focused === 1 || stats.focused === 2) {
-                    return "You are busy, not committed.";
+                if (focused === 1) {
+                    return "One focused day in seven. You are busy, not committed.";
                 }
                 
-                if (stats.focused >= 3 && stats.focused < 5) {
-                    return "Progress. But can you sustain it?";
+                if (focused === 2) {
+                    return "Two focused days in seven. You are busy, not committed.";
                 }
                 
-                if (stats.focused >= 5) {
-                    return "You're building momentum.";
+                if (focused === 3 || focused === 4) {
+                    return "Half the week is something. The other half is the question.";
+                }
+                
+                if (focused === 5) {
+                    return "Five days is real. Can you make it six?";
+                }
+                
+                if (focused === 6) {
+                    return "Six days is real. Can you make it seven?";
+                }
+                
+                if (focused === 7) {
+                    return "Seven days. This is what commitment looks like.";
                 }
                 
                 return "Keep going.";
@@ -164,15 +217,15 @@
                         <div className="max-w-md w-full space-y-8">
                             {isFirstGoal && (
                                 <div className="text-center mb-8">
-                                    <p className="text-sm text-gray-500 font-light italic">
-                                        This will take time. That's the point.
+                                    <p className="text-sm text-gray-500 font-light">
+                                        Most people change their goal in a week. Will you?
                                     </p>
                                 </div>
                             )}
                             
                             <div className="text-center">
                                 <h2 className="text-2xl font-light mb-2">What do you want?</h2>
-                                <p className="text-gray-500 font-light">Be specific.</p>
+                                <p className="text-gray-500 font-light">Say it like you mean it.</p>
                             </div>
                             
                             <textarea
@@ -204,7 +257,80 @@
                 );
             }
 
-            // HOME SCREEN
+            // GOAL CHANGE WARNING SCREEN
+            if (screen === 'goal-change-warning') {
+                return (
+                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-8">
+                            <div className="text-center space-y-4">
+                                <h2 className="text-2xl font-light">Changing your goal means starting over.</h2>
+                                <p className="text-gray-500 font-light">Your weekly data will reset.</p>
+                                <p className="text-gray-500 font-light">Are you sure?</p>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                <button
+                                    onClick={() => setScreen('home')}
+                                    className="w-full py-4 bg-black text-white hover:bg-gray-800 transition-colors"
+                                >
+                                    Keep Current Goal
+                                </button>
+                                
+                                <button
+                                    onClick={resetGoalAndData}
+                                    className="w-full py-3 text-gray-500 hover:text-black transition-colors"
+                                >
+                                    Start Over
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // HOME SCREEN - AFTER COMPLETING TODAY'S SESSION
+            if (screen === 'home' && todayCompleted) {
+                return (
+                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+                        <div className="max-w-md w-full space-y-12">
+                            <div className="text-center space-y-4">
+                                <p className="text-sm text-gray-400 uppercase tracking-wider">Your Goal</p>
+                                <h1 className="text-3xl font-light leading-tight px-4">{goal}</h1>
+                                {goal && (
+                                    <button
+                                        onClick={() => {
+                                            setGoalInput(goal);
+                                            setScreen('goal-change-warning');
+                                        }}
+                                        className="text-sm text-gray-400 hover:text-black transition-colors"
+                                    >
+                                        Change
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className="text-center space-y-4">
+                                <p className="text-sm text-gray-400 uppercase tracking-wider">Today's Work</p>
+                                <p className="text-xl font-light px-4">{completedTask}</p>
+                                <p className="text-3xl">✅</p>
+                            </div>
+
+                            <div className="text-center">
+                                <p className="text-gray-500 font-light">Today is done.</p>
+                            </div>
+
+                            <button
+                                onClick={() => setScreen('weekly')}
+                                className="w-full py-3 border-2 border-gray-200 text-gray-600 hover:border-black hover:text-black transition-colors"
+                            >
+                                Weekly Truth
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // HOME SCREEN - NORMAL (CAN SET TASK)
             if (screen === 'home') {
                 return (
                     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
@@ -217,7 +343,7 @@
                                         <button
                                             onClick={() => {
                                                 setGoalInput(goal);
-                                                setScreen('goal');
+                                                setScreen('goal-change-warning');
                                             }}
                                             className="text-sm text-gray-400 hover:text-black transition-colors"
                                         >
@@ -229,7 +355,7 @@
                                         onClick={() => setScreen('goal')}
                                         className="text-3xl font-light text-gray-300 hover:text-black transition-colors"
                                     >
-                                        Set your goal
+                                        What matters enough to fight for?
                                     </button>
                                 )}
                             </div>
@@ -252,7 +378,7 @@
                                             type="text"
                                             value={taskInput}
                                             onChange={(e) => setTaskInput(e.target.value)}
-                                            placeholder="What's the one thing you'll do today?"
+                                            placeholder="What's the one thing you'll do today? Choose carefully."
                                             className="w-full text-center text-xl font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
                                         />
                                         
@@ -337,8 +463,8 @@
                                 {/* End Session with warning */}
                                 <div className="flex flex-col items-center space-y-2">
                                     {showEndWarning && (
-                                        <p className="text-sm text-gray-500 font-light">
-                                            Ending early won't bring you closer to your goal.
+                                        <p className="text-sm text-gray-400 font-light text-center px-4">
+                                            {endWarningText}
                                         </p>
                                     )}
                                     <button
@@ -356,12 +482,20 @@
 
             // REFLECTION SCREEN
             if (screen === 'reflection') {
+                const reflectionHeading = sessionCompleted
+                    ? "You finished."
+                    : "You stopped early.";
+                
+                const reflectionSubtext = sessionCompleted
+                    ? "Did it move you forward?"
+                    : "Was it the task or your focus?";
+
                 return (
                     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
                         <div className="max-w-md w-full space-y-8">
                             <div className="text-center">
-                                <h2 className="text-2xl font-light mb-2">Good work.</h2>
-                                <p className="text-gray-500 font-light">How did it go?</p>
+                                <h2 className="text-2xl font-light mb-2">{reflectionHeading}</h2>
+                                <p className="text-gray-500 font-light">{reflectionSubtext}</p>
                             </div>
                             
                             <div className="flex justify-center space-x-6">
