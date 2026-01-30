@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <title>FOCUS - One Goal, One Thing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -16,10 +20,58 @@
         .tabular-nums {
             font-variant-numeric: tabular-nums;
         }
+        
+        /* Install prompt styles */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: black;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 90%;
+            width: 400px;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .install-prompt-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
     </style>
 </head>
 <body>
     <div id="app"></div>
+    
+    <!-- Install Prompt -->
+    <div id="install-prompt" style="display: none;" class="install-prompt">
+        <p class="font-light text-sm mb-1">Install FOCUS</p>
+        <p class="text-xs text-gray-400">Access faster, work distraction-free</p>
+        <div class="install-prompt-buttons">
+            <button id="install-button" class="flex-1 py-2 bg-white text-black text-sm font-light hover:bg-gray-200 transition-colors">
+                Install
+            </button>
+            <button id="install-dismiss" class="px-4 py-2 text-gray-400 text-sm hover:text-white transition-colors">
+                Not now
+            </button>
+        </div>
+    </div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -85,7 +137,7 @@
                     setIsFirstGoal(true);
                 }
             
-                // 🔴 NEW: Resume active session if exists
+                // Resume active session if exists
                 const sessionStartTime = localStorage.getItem('focus_session_start_time');
                 const sessionDuration = localStorage.getItem('focus_session_duration');
                 const sessionTask = localStorage.getItem('focus_session_task');
@@ -179,7 +231,7 @@
                 setShowEndWarning(false);
                 setSessionCompleted(false);
                 
-                // 🔴 NEW: Store session start data
+                // Store session start data
                 localStorage.setItem('focus_session_start_time', Date.now().toString());
                 localStorage.setItem('focus_session_duration', estimatedTime.toString());
                 localStorage.setItem('focus_session_task', task);
@@ -188,7 +240,7 @@
                 setScreen('focus');
             };
 
-          const handleEndSession = () => {
+            const handleEndSession = () => {
                 const wasCompleted = timeLeft === 0;
                 const minutesPlanned = estimatedTime;
                 const minutesDone = Math.floor((estimatedTime * 60 - timeLeft) / 60);
@@ -201,7 +253,7 @@
                     setTimerActive(false);
                     setSessionCompleted(wasCompleted);
                     
-                    // 🔴 NEW: Clear session data when ending
+                    // Clear session data when ending
                     localStorage.removeItem('focus_session_start_time');
                     localStorage.removeItem('focus_session_duration');
                     localStorage.removeItem('focus_session_task');
@@ -229,7 +281,7 @@
                 localStorage.setItem('focus_last_session_date', today);
                 localStorage.setItem('focus_completed_task', dailyTask);
                 
-                // 🔴 NEW: Clear active session data
+                // Clear active session data
                 localStorage.removeItem('focus_session_start_time');
                 localStorage.removeItem('focus_session_duration');
                 localStorage.removeItem('focus_session_task');
@@ -449,7 +501,6 @@
 
                             <div className="text-center space-y-6">
                                 <p className="text-sm text-gray-400 uppercase tracking-wider">Today's One Thing</p>
-                                {/* 🔴 FIX: Show input if taskInput has value OR if dailyTask is empty */}
                                 {dailyTask && taskInput === '' ? (
                                     <>
                                         <p className="text-xl font-light px-4">{dailyTask}</p>
@@ -516,7 +567,6 @@
                 return (
                     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
                         <div className="max-w-md w-full space-y-16">
-                            {/* Goal reminder - subtle but present */}
                             <div className="text-center">
                                 <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">For your goal:</p>
                                 <p className="text-sm text-gray-400 font-light">{goal}</p>
@@ -531,7 +581,6 @@
                                     </p>
                                 </div>
                                 
-                                {/* Progress bar */}
                                 <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
                                     <div 
                                         className="h-full bg-white transition-all duration-1000 ease-linear"
@@ -548,7 +597,6 @@
                                     {timerActive ? 'Pause' : 'Resume'}
                                 </button>
                                 
-                                {/* End Session with warning */}
                                 <div className="flex flex-col items-center space-y-2">
                                     {showEndWarning && (
                                         <p className="text-sm text-gray-400 font-light text-center px-4">
@@ -729,5 +777,59 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- PWA Install Handler -->
+    <script>
+        let deferredPrompt;
+        const installPrompt = document.getElementById('install-prompt');
+        const installButton = document.getElementById('install-button');
+        const installDismiss = document.getElementById('install-dismiss');
+        
+        // Check if already installed or dismissed
+        const isInstallDismissed = localStorage.getItem('focus_install_dismissed');
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+                          || window.navigator.standalone 
+                          || document.referrer.includes('android-app://');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt if not dismissed and not standalone
+            if (!isInstallDismissed && !isStandalone) {
+                setTimeout(() => {
+                    installPrompt.style.display = 'block';
+                }, 3000); // Show after 3 seconds
+            }
+        });
+        
+        installButton.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('PWA installed');
+            }
+            
+            deferredPrompt = null;
+            installPrompt.style.display = 'none';
+        });
+        
+        installDismiss.addEventListener('click', () => {
+            localStorage.setItem('focus_install_dismissed', 'true');
+            installPrompt.style.display = 'none';
+        });
+        
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed'));
+            });
+        }
+    </script>
 </body>
 </html>
