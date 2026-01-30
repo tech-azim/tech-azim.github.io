@@ -1,5 +1,5 @@
 const CACHE_NAME = "focus-v1";
-const urlsToCache = ["/", "/index.html", "/manifest.json"];
+const urlsToCache = ["./", "./index.html", "./manifest.json"];
 
 // Install event - cache resources
 self.addEventListener("install", (event) => {
@@ -16,21 +16,22 @@ self.addEventListener("install", (event) => {
 });
 
 // Fetch event - serve from cache, fallback to network
+// Fetch event - serve from cache, fallback to network
 self.addEventListener("fetch", (event) => {
+  // Hanya proses request http/https, jangan cache chrome-extension atau file eksternal
+  if (!event.request.url.startsWith("http")) {
+    return;
+  }
   event.respondWith(
     caches
       .match(event.request)
       .then((response) => {
-        // Cache hit - return response
         if (response) {
           return response;
         }
-
-        // Clone the request
         const fetchRequest = event.request.clone();
-
         return fetch(fetchRequest).then((response) => {
-          // Check if valid response
+          // Hanya cache response dari origin yang sama
           if (
             !response ||
             response.status !== 200 ||
@@ -38,20 +39,16 @@ self.addEventListener("fetch", (event) => {
           ) {
             return response;
           }
-
-          // Clone the response
           const responseToCache = response.clone();
-
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
           });
-
           return response;
         });
       })
       .catch(() => {
         // Return offline page if available
-        return caches.match("/");
+        return caches.match("./");
       }),
   );
 });
