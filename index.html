@@ -1,835 +1,927 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/icon-192.png">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
     <title>FOCUS - One Goal, One Thing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+          Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Install prompt styles */
+      .install-prompt {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: black;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        max-width: 90%;
+        width: 400px;
+        animation: slideUp 0.3s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
         }
-        .tabular-nums {
-            font-variant-numeric: tabular-nums;
+        to {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
         }
-        
-        /* Install prompt styles */
-        .install-prompt {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: black;
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            z-index: 1000;
-            max-width: 90%;
-            width: 400px;
-            animation: slideUp 0.3s ease-out;
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateX(-50%) translateY(100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(-50%) translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .install-prompt-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 12px;
-        }
+      }
+
+      .install-prompt-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app"></div>
-    
+
     <!-- Install Prompt -->
-    <div id="install-prompt" style="display: none;" class="install-prompt">
-        <p class="font-light text-sm mb-1">Install FOCUS</p>
-        <p class="text-xs text-gray-400">Access faster, work distraction-free</p>
-        <div class="install-prompt-buttons">
-            <button id="install-button" class="flex-1 py-2 bg-white text-black text-sm font-light hover:bg-gray-200 transition-colors">
-                Install
-            </button>
-            <button id="install-dismiss" class="px-4 py-2 text-gray-400 text-sm hover:text-white transition-colors">
-                Not now
-            </button>
-        </div>
+    <div id="install-prompt" style="display: none" class="install-prompt">
+      <p class="font-light text-sm mb-1">Install FOCUS</p>
+      <p class="text-xs text-gray-400">Access faster, work distraction-free</p>
+      <div class="install-prompt-buttons">
+        <button
+          id="install-button"
+          class="flex-1 py-2 bg-white text-black text-sm font-light hover:bg-gray-200 transition-colors"
+        >
+          Install
+        </button>
+        <button
+          id="install-dismiss"
+          class="px-4 py-2 text-gray-400 text-sm hover:text-white transition-colors"
+        >
+          Not now
+        </button>
+      </div>
     </div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+      const { useState, useEffect } = React;
 
-        const FocusApp = () => {
-            const [screen, setScreen] = useState('home');
-            const [goal, setGoal] = useState('');
-            const [goalInput, setGoalInput] = useState('');
-            const [dailyTask, setDailyTask] = useState('');
-            const [taskInput, setTaskInput] = useState('');
-            const [estimatedTime, setEstimatedTime] = useState(25);
-            const [timerActive, setTimerActive] = useState(false);
-            const [timeLeft, setTimeLeft] = useState(25 * 60);
-            const [reflectionStatus, setReflectionStatus] = useState(null);
-            const [reflectionNote, setReflectionNote] = useState('');
-            const [showEndWarning, setShowEndWarning] = useState(false);
-            const [endWarningText, setEndWarningText] = useState('');
-            const [isFirstGoal, setIsFirstGoal] = useState(false);
-            const [sessionCompleted, setSessionCompleted] = useState(true);
-            const [todayCompleted, setTodayCompleted] = useState(false);
-            const [completedTask, setCompletedTask] = useState('');
+      const FocusApp = () => {
+        const [screen, setScreen] = useState("home");
+        const [goal, setGoal] = useState("");
+        const [goalInput, setGoalInput] = useState("");
+        const [dailyTask, setDailyTask] = useState("");
+        const [taskInput, setTaskInput] = useState("");
+        const [estimatedTime, setEstimatedTime] = useState(25);
+        const [timerActive, setTimerActive] = useState(false);
+        const [timeLeft, setTimeLeft] = useState(25 * 60);
+        const [reflectionStatus, setReflectionStatus] = useState(null);
+        const [reflectionNote, setReflectionNote] = useState("");
+        const [showEndWarning, setShowEndWarning] = useState(false);
+        const [endWarningText, setEndWarningText] = useState("");
+        const [isFirstGoal, setIsFirstGoal] = useState(false);
+        const [sessionCompleted, setSessionCompleted] = useState(true);
+        const [todayCompleted, setTodayCompleted] = useState(false);
+        const [completedTask, setCompletedTask] = useState("");
 
-            // Haptic feedback helper
-            const hapticFeedback = (type = 'medium') => {
-                if (navigator.vibrate) {
-                    const patterns = {
-                        light: 10,
-                        medium: 20,
-                        heavy: 30,
-                        success: [10, 50, 10]
-                    };
-                    navigator.vibrate(patterns[type] || patterns.medium);
-                }
+        // Haptic feedback helper
+        const hapticFeedback = (type = "medium") => {
+          if (navigator.vibrate) {
+            const patterns = {
+              light: 10,
+              medium: 20,
+              heavy: 30,
+              success: [10, 50, 10],
             };
-
-            // Load saved data
-            useEffect(() => {
-                const savedGoal = localStorage.getItem('focus_goal');
-                const savedDailyTask = localStorage.getItem('focus_daily_task');
-                const hasSetGoalBefore = localStorage.getItem('focus_has_set_goal');
-                const lastSessionDate = localStorage.getItem('focus_last_session_date');
-                const today = new Date().toISOString().split('T')[0];
-                
-                if (savedGoal) {
-                    setGoal(savedGoal);
-                    setGoalInput(savedGoal);
-                }
-                
-                // Check if user already completed today
-                if (lastSessionDate === today) {
-                    const task = localStorage.getItem('focus_completed_task');
-                    setTodayCompleted(true);
-                    setCompletedTask(task || '');
-                } else {
-                    // New day - can set new task
-                    if (savedDailyTask) {
-                        setDailyTask(savedDailyTask);
-                        setTaskInput(savedDailyTask);
-                    }
-                }
-                
-                if (!hasSetGoalBefore) {
-                    setIsFirstGoal(true);
-                }
-            
-                // Resume active session if exists
-                const sessionStartTime = localStorage.getItem('focus_session_start_time');
-                const sessionDuration = localStorage.getItem('focus_session_duration');
-                const sessionTask = localStorage.getItem('focus_session_task');
-                
-                if (sessionStartTime && sessionDuration && sessionTask) {
-                    const startTime = parseInt(sessionStartTime);
-                    const duration = parseInt(sessionDuration);
-                    const now = Date.now();
-                    const elapsedSeconds = Math.floor((now - startTime) / 1000);
-                    const totalSeconds = duration * 60;
-                    const remaining = totalSeconds - elapsedSeconds;
-                    
-                    setDailyTask(sessionTask);
-                    setEstimatedTime(duration);
-                    
-                    if (remaining > 0) {
-                        // Session still active - resume
-                        setTimeLeft(remaining);
-                        setTimerActive(true);
-                        setSessionCompleted(false);
-                        setScreen('focus');
-                    } else {
-                        // Session already finished - go to reflection
-                        setTimeLeft(0);
-                        setTimerActive(false);
-                        setSessionCompleted(true);
-                        setScreen('reflection');
-                        
-                        // Clean up session data
-                        localStorage.removeItem('focus_session_start_time');
-                        localStorage.removeItem('focus_session_duration');
-                        localStorage.removeItem('focus_session_task');
-                    }
-                }
-            }, []);
-
-            // Timer countdown
-            useEffect(() => {
-                let interval = null;
-                if (timerActive && timeLeft > 0) {
-                    interval = setInterval(() => {
-                        setTimeLeft(time => time - 1);
-                    }, 1000);
-                } else if (timeLeft === 0) {
-                    setTimerActive(false);
-                    setSessionCompleted(true);
-                    hapticFeedback('success');
-                    setScreen('reflection');
-                }
-                return () => clearInterval(interval);
-            }, [timerActive, timeLeft]);
-
-            const formatTime = (seconds) => {
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            };
-
-            const saveGoal = () => {
-                setGoal(goalInput);
-                localStorage.setItem('focus_goal', goalInput);
-                localStorage.setItem('focus_has_set_goal', 'true');
-                setIsFirstGoal(false);
-                hapticFeedback('medium');
-                setScreen('home');
-            };
-
-            const resetGoalAndData = () => {
-                // Clear ALL data
-                localStorage.removeItem('focus_weekly_data');
-                localStorage.removeItem('focus_last_session_date');
-                localStorage.removeItem('focus_completed_task');
-                localStorage.removeItem('focus_daily_task');
-                
-                // Reset state
-                setTodayCompleted(false);
-                setCompletedTask('');
-                setDailyTask('');
-                setTaskInput('');
-                
-                hapticFeedback('heavy');
-                setScreen('goal');
-            };
-
-            const startFocus = () => {
-                const task = taskInput.trim() || dailyTask;
-                setDailyTask(task);
-                localStorage.setItem('focus_daily_task', task);
-                setTimeLeft(estimatedTime * 60);
-                setTimerActive(true);
-                setShowEndWarning(false);
-                setSessionCompleted(false);
-                
-                // Store session start data
-                localStorage.setItem('focus_session_start_time', Date.now().toString());
-                localStorage.setItem('focus_session_duration', estimatedTime.toString());
-                localStorage.setItem('focus_session_task', task);
-                
-                hapticFeedback('heavy');
-                setScreen('focus');
-            };
-
-            const handleEndSession = () => {
-                const wasCompleted = timeLeft === 0;
-                const minutesPlanned = estimatedTime;
-                const minutesDone = Math.floor((estimatedTime * 60 - timeLeft) / 60);
-                
-                if (!showEndWarning && !wasCompleted) {
-                    setShowEndWarning(true);
-                    setEndWarningText(`You set aside ${minutesPlanned} minutes. You've done ${minutesDone}. Sure?`);
-                    hapticFeedback('light');
-                } else {
-                    setTimerActive(false);
-                    setSessionCompleted(wasCompleted);
-                    
-                    // Clear session data when ending
-                    localStorage.removeItem('focus_session_start_time');
-                    localStorage.removeItem('focus_session_duration');
-                    localStorage.removeItem('focus_session_task');
-                    
-                    setScreen('reflection');
-                }
-            };
-
-            const saveReflection = (status) => {
-                const today = new Date().toISOString().split('T')[0];
-                const weeklyData = JSON.parse(localStorage.getItem('focus_weekly_data') || '[]');
-                
-                const filteredData = weeklyData.filter(d => d.date !== today);
-                
-                filteredData.push({
-                    date: today,
-                    task: dailyTask,
-                    status: status,
-                    note: reflectionNote,
-                    duration: estimatedTime,
-                    completed: sessionCompleted
-                });
-                
-                localStorage.setItem('focus_weekly_data', JSON.stringify(filteredData));
-                localStorage.setItem('focus_last_session_date', today);
-                localStorage.setItem('focus_completed_task', dailyTask);
-                
-                // Clear active session data
-                localStorage.removeItem('focus_session_start_time');
-                localStorage.removeItem('focus_session_duration');
-                localStorage.removeItem('focus_session_task');
-                
-                setTodayCompleted(true);
-                setCompletedTask(dailyTask);
-                setReflectionStatus(null);
-                setReflectionNote('');
-                
-                hapticFeedback('success');
-                setScreen('home');
-            };
-
-            const getWeeklyStats = () => {
-                const weeklyData = JSON.parse(localStorage.getItem('focus_weekly_data') || '[]');
-                const lastWeek = weeklyData.slice(-7);
-                
-                const focused = lastWeek.filter(d => d.status === 'progress').length;
-                const neutral = lastWeek.filter(d => d.status === 'neutral').length;
-                const distracted = lastWeek.filter(d => d.status === 'failed').length;
-                const total = lastWeek.length;
-                
-                return { focused, neutral, distracted, total, data: lastWeek };
-            };
-
-            const getWeeklyTruth = (stats) => {
-                const { focused, neutral, total } = stats;
-                
-                if (total === 0) {
-                    return "No data yet. Start today.";
-                }
-                
-                if (focused === 0 && neutral === 0) {
-                    return "Zero days focused. Your goal is still imaginary.";
-                }
-                
-                if (focused === 0 && neutral > 0) {
-                    return `${neutral} days of trying. Zero days of progress.`;
-                }
-                
-                if (focused === 1) {
-                    return "One focused day in seven. You are busy, not committed.";
-                }
-                
-                if (focused === 2) {
-                    return "Two focused days in seven. You are busy, not committed.";
-                }
-                
-                if (focused === 3 || focused === 4) {
-                    return "Half the week is something. The other half is the question.";
-                }
-                
-                if (focused === 5) {
-                    return "Five days is real. Can you make it six?";
-                }
-                
-                if (focused === 6) {
-                    return "Six days is real. Can you make it seven?";
-                }
-                
-                if (focused === 7) {
-                    return "Seven days. This is what commitment looks like.";
-                }
-                
-                return "Keep going.";
-            };
-
-            // GOAL SCREEN
-            if (screen === 'goal') {
-                return (
-                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-8">
-                            {isFirstGoal && (
-                                <div className="text-center mb-8">
-                                    <p className="text-sm text-gray-500 font-light">
-                                        Most people change their goal in a week. Will you?
-                                    </p>
-                                </div>
-                            )}
-                            
-                            <div className="text-center">
-                                <h2 className="text-2xl font-light mb-2">What do you want?</h2>
-                                <p className="text-gray-500 font-light">Say it like you mean it.</p>
-                            </div>
-                            
-                            <textarea
-                                value={goalInput}
-                                onChange={(e) => setGoalInput(e.target.value)}
-                                placeholder="Example: Become interview-ready as a fullstack developer"
-                                className="w-full text-center text-xl font-light border-2 border-gray-200 focus:border-black outline-none p-4 min-h-[120px] resize-none placeholder-gray-300"
-                                autoFocus
-                            />
-                            
-                            <button
-                                onClick={saveGoal}
-                                disabled={!goalInput.trim()}
-                                className="w-full py-4 bg-black text-white disabled:bg-gray-200 disabled:text-gray-400 transition-colors"
-                            >
-                                Set Goal
-                            </button>
-                            
-                            {goal && (
-                                <button
-                                    onClick={() => setScreen('home')}
-                                    className="w-full py-3 text-gray-500 hover:text-black transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                );
-            }
-
-            // GOAL CHANGE WARNING SCREEN
-            if (screen === 'goal-change-warning') {
-                return (
-                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-8">
-                            <div className="text-center space-y-4">
-                                <h2 className="text-2xl font-light">Changing your goal means starting over.</h2>
-                                <p className="text-gray-500 font-light">Your weekly data will reset.</p>
-                                <p className="text-gray-500 font-light">Are you sure?</p>
-                            </div>
-                            
-                            <div className="space-y-4">
-                                <button
-                                    onClick={() => setScreen('home')}
-                                    className="w-full py-4 bg-black text-white hover:bg-gray-800 transition-colors"
-                                >
-                                    Keep Current Goal
-                                </button>
-                                
-                                <button
-                                    onClick={resetGoalAndData}
-                                    className="w-full py-3 text-gray-500 hover:text-black transition-colors"
-                                >
-                                    Start Over
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // HOME SCREEN - AFTER COMPLETING TODAY'S SESSION
-            if (screen === 'home' && todayCompleted) {
-                return (
-                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-12">
-                            <div className="text-center space-y-4">
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Your Goal</p>
-                                <h1 className="text-3xl font-light leading-tight px-4">{goal}</h1>
-                                {goal && (
-                                    <button
-                                        onClick={() => {
-                                            setGoalInput(goal);
-                                            setScreen('goal-change-warning');
-                                        }}
-                                        className="text-sm text-gray-400 hover:text-black transition-colors"
-                                    >
-                                        Change
-                                    </button>
-                                )}
-                            </div>
-
-                            <div className="text-center space-y-4">
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Today's Work</p>
-                                <p className="text-xl font-light px-4">{completedTask}</p>
-                                <p className="text-3xl">✅</p>
-                            </div>
-
-                            <div className="text-center">
-                                <p className="text-gray-500 font-light">Today is done.</p>
-                            </div>
-
-                            <button
-                                onClick={() => setScreen('weekly')}
-                                className="w-full py-3 border-2 border-gray-200 text-gray-600 hover:border-black hover:text-black transition-colors"
-                            >
-                                Weekly Truth
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            // HOME SCREEN - NORMAL (CAN SET TASK)
-            if (screen === 'home') {
-                return (
-                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-12">
-                            <div className="text-center space-y-4">
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Your Goal</p>
-                                {goal ? (
-                                    <>
-                                        <h1 className="text-3xl font-light leading-tight px-4">{goal}</h1>
-                                        <button
-                                            onClick={() => {
-                                                setGoalInput(goal);
-                                                setScreen('goal-change-warning');
-                                            }}
-                                            className="text-sm text-gray-400 hover:text-black transition-colors"
-                                        >
-                                            Change
-                                        </button>
-                                    </>
-                                ) : (
-                                    <button
-                                        onClick={() => setScreen('goal')}
-                                        className="text-3xl font-light text-gray-300 hover:text-black transition-colors"
-                                    >
-                                        What matters enough to fight for?
-                                    </button>
-                                )}
-                            </div>
-
-                            <div className="text-center space-y-6">
-                                <p className="text-sm text-gray-400 uppercase tracking-wider">Today's One Thing</p>
-                                {dailyTask && taskInput === '' ? (
-                                    <>
-                                        <p className="text-xl font-light px-4">{dailyTask}</p>
-                                        <button
-                                            onClick={startFocus}
-                                            className="w-full py-4 bg-black text-white text-lg font-light hover:bg-gray-800 transition-colors"
-                                        >
-                                            Start
-                                        </button>
-                                    </>
-                                ) : (
-                                    <div className="space-y-4">
-                                        <input
-                                            type="text"
-                                            value={taskInput}
-                                            onChange={(e) => setTaskInput(e.target.value)}
-                                            placeholder="What's the one thing you'll do today? Choose carefully."
-                                            className="w-full text-center text-xl font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
-                                        />
-                                        
-                                        <div className="flex items-center justify-center space-x-4">
-                                            <label className="text-sm text-gray-500">Estimated time:</label>
-                                            <select
-                                                value={estimatedTime}
-                                                onChange={(e) => setEstimatedTime(Number(e.target.value))}
-                                                className="text-lg font-light border-b border-gray-300 focus:border-black outline-none"
-                                            >
-                                                <option value={15}>15 min</option>
-                                                <option value={25}>25 min</option>
-                                                <option value={45}>45 min</option>
-                                                <option value={60}>60 min</option>
-                                                <option value={90}>90 min</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <button
-                                            onClick={startFocus}
-                                            disabled={!taskInput.trim()}
-                                            className="w-full py-4 bg-black text-white disabled:bg-gray-200 disabled:text-gray-400 transition-colors"
-                                        >
-                                            Begin
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={() => setScreen('weekly')}
-                                    className="text-sm text-gray-400 hover:text-black transition-colors uppercase tracking-wider"
-                                >
-                                    Weekly Truth
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // FOCUS SCREEN
-            if (screen === 'focus') {
-                const progress = ((estimatedTime * 60 - timeLeft) / (estimatedTime * 60)) * 100;
-                
-                return (
-                    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-16">
-                            <div className="text-center">
-                                <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">For your goal:</p>
-                                <p className="text-sm text-gray-400 font-light">{goal}</p>
-                            </div>
-                            
-                            <div className="text-center space-y-8">
-                                <h2 className="text-2xl font-light px-8">{dailyTask}</h2>
-                                
-                                <div className="tabular-nums">
-                                    <p className="text-8xl font-extralight tracking-tight">
-                                        {formatTime(timeLeft)}
-                                    </p>
-                                </div>
-                                
-                                <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
-                                    <div 
-                                        className="h-full bg-white transition-all duration-1000 ease-linear"
-                                        style={{ width: `${progress}%` }}
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className="flex flex-col items-center space-y-6">
-                                <button
-                                    onClick={() => setTimerActive(!timerActive)}
-                                    className="px-8 py-3 border border-white hover:bg-white hover:text-black transition-colors"
-                                >
-                                    {timerActive ? 'Pause' : 'Resume'}
-                                </button>
-                                
-                                <div className="flex flex-col items-center space-y-2">
-                                    {showEndWarning && (
-                                        <p className="text-sm text-gray-400 font-light text-center px-4">
-                                            {endWarningText}
-                                        </p>
-                                    )}
-                                    <button
-                                        onClick={handleEndSession}
-                                        className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
-                                    >
-                                        {showEndWarning ? 'End Anyway' : 'End Session'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
-            // REFLECTION SCREEN
-            if (screen === 'reflection') {
-                const reflectionHeading = sessionCompleted
-                    ? "You finished."
-                    : "You stopped early.";
-                
-                const reflectionSubtext = sessionCompleted
-                    ? "Did it move you forward?"
-                    : "Was it the task or your focus?";
-            
-                return (
-                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-8">
-                            <div className="text-center">
-                                <h2 className="text-2xl font-light mb-2">{reflectionHeading}</h2>
-                                <p className="text-gray-500 font-light">{reflectionSubtext}</p>
-                            </div>
-                            
-                            <div className="space-y-3">
-                                <button
-                                    onClick={() => setReflectionStatus('progress')}
-                                    className={`w-full text-left px-6 py-4 border transition-all ${
-                                        reflectionStatus === 'progress' 
-                                            ? 'border-black bg-black text-white' 
-                                            : 'border-gray-200 hover:border-gray-400'
-                                    }`}
-                                >
-                                    <div className="font-light text-base">
-                                        I worked on my one thing
-                                    </div>
-                                </button>
-                                
-                                <button
-                                    onClick={() => setReflectionStatus('neutral')}
-                                    className={`w-full text-left px-6 py-4 border transition-all ${
-                                        reflectionStatus === 'neutral' 
-                                            ? 'border-black bg-black text-white' 
-                                            : 'border-gray-200 hover:border-gray-400'
-                                    }`}
-                                >
-                                    <div className="font-light text-base">
-                                        I worked on something else
-                                    </div>
-                                </button>
-                                
-                                <button
-                                    onClick={() => setReflectionStatus('failed')}
-                                    className={`w-full text-left px-6 py-4 border transition-all ${
-                                        reflectionStatus === 'failed' 
-                                            ? 'border-black bg-black text-white' 
-                                            : 'border-gray-200 hover:border-gray-400'
-                                    }`}
-                                >
-                                    <div className="font-light text-base">
-                                        Today was out of my control
-                                    </div>
-                                </button>
-                            </div>
-                            
-                            {reflectionStatus && (
-                                <div className="space-y-4 pt-4">
-                                    <input
-                                        type="text"
-                                        value={reflectionNote}
-                                        onChange={(e) => setReflectionNote(e.target.value)}
-                                        placeholder="One sentence (optional)"
-                                        className="w-full text-center text-lg font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
-                                    />
-                                    
-                                    <button
-                                        onClick={() => saveReflection(reflectionStatus)}
-                                        className="w-full py-3 bg-black text-white hover:bg-gray-800 transition-colors"
-                                    >
-                                        Done
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                );
-            }
-
-            // WEEKLY TRUTH SCREEN
-            if (screen === 'weekly') {
-                const stats = getWeeklyStats();
-                const truth = getWeeklyTruth(stats);
-                
-                return (
-                    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
-                        <div className="max-w-md w-full space-y-12">
-                            <div className="text-center">
-                                <h2 className="text-2xl font-light mb-8">Weekly Truth</h2>
-                                
-                                <div className="space-y-6">
-                                    <div>
-                                        <p className="text-6xl font-light">{stats.focused}</p>
-                                        <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">Days Focused</p>
-                                    </div>
-                                    
-                                    {stats.neutral > 0 && (
-                                        <div>
-                                            <p className="text-4xl font-light text-gray-400">{stats.neutral}</p>
-                                            <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">Days Trying</p>
-                                        </div>
-                                    )}
-                                    
-                                    {stats.distracted > 0 && (
-                                        <div>
-                                            <p className="text-4xl font-light text-gray-400">{stats.distracted}</p>
-                                            <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">Days Distracted</p>
-                                        </div>
-                                    )}
-                                    
-                                    <div className="pt-6">
-                                        <p className="text-gray-600 font-light">{truth}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {stats.data.length > 0 && (
-                                <div className="space-y-3">
-                                    <p className="text-xs text-gray-400 uppercase tracking-wider">Recent Days</p>
-                                    {[...stats.data].reverse().map((day, i) => (
-                                        <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100">
-                                            <span className="text-sm text-gray-600">
-                                                {new Date(day.date).toLocaleDateString('en-US', { 
-                                                    weekday: 'short', 
-                                                    month: 'short', 
-                                                    day: 'numeric' 
-                                                })}
-                                            </span>
-                                            <span className="text-lg">
-                                                {day.status === 'progress' && '✅'}
-                                                {day.status === 'neutral' && '😐'}
-                                                {day.status === 'failed' && '❌'}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            
-                            <button
-                                onClick={() => setScreen('home')}
-                                className="w-full py-3 border-2 border-gray-200 text-gray-600 hover:border-black hover:text-black transition-colors"
-                            >
-                                Back
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            return null;
+            navigator.vibrate(patterns[type] || patterns.medium);
+          }
         };
 
-        ReactDOM.render(<FocusApp />, document.getElementById('app'));
+        // Load saved data
+        useEffect(() => {
+          const savedGoal = localStorage.getItem("focus_goal");
+          const savedDailyTask = localStorage.getItem("focus_daily_task");
+          const hasSetGoalBefore = localStorage.getItem("focus_has_set_goal");
+          const lastSessionDate = localStorage.getItem(
+            "focus_last_session_date",
+          );
+          const today = new Date().toISOString().split("T")[0];
+
+          if (savedGoal) {
+            setGoal(savedGoal);
+            setGoalInput(savedGoal);
+          }
+
+          // Check if user already completed today
+          if (lastSessionDate === today) {
+            const task = localStorage.getItem("focus_completed_task");
+            setTodayCompleted(true);
+            setCompletedTask(task || "");
+          } else {
+            // New day - can set new task
+            if (savedDailyTask) {
+              setDailyTask(savedDailyTask);
+              setTaskInput(savedDailyTask);
+            }
+          }
+
+          if (!hasSetGoalBefore) {
+            setIsFirstGoal(true);
+          }
+
+          // Resume active session if exists
+          const sessionStartTime = localStorage.getItem(
+            "focus_session_start_time",
+          );
+          const sessionDuration = localStorage.getItem(
+            "focus_session_duration",
+          );
+          const sessionTask = localStorage.getItem("focus_session_task");
+
+          if (sessionStartTime && sessionDuration && sessionTask) {
+            const startTime = parseInt(sessionStartTime);
+            const duration = parseInt(sessionDuration);
+            const now = Date.now();
+            const elapsedSeconds = Math.floor((now - startTime) / 1000);
+            const totalSeconds = duration * 60;
+            const remaining = totalSeconds - elapsedSeconds;
+
+            setDailyTask(sessionTask);
+            setEstimatedTime(duration);
+
+            if (remaining > 0) {
+              // Session still active - resume
+              setTimeLeft(remaining);
+              setTimerActive(true);
+              setSessionCompleted(false);
+              setScreen("focus");
+            } else {
+              // Session already finished - go to reflection
+              setTimeLeft(0);
+              setTimerActive(false);
+              setSessionCompleted(true);
+              setScreen("reflection");
+
+              // Clean up session data
+              localStorage.removeItem("focus_session_start_time");
+              localStorage.removeItem("focus_session_duration");
+              localStorage.removeItem("focus_session_task");
+            }
+          }
+        }, []);
+
+        // Timer countdown
+        useEffect(() => {
+          let interval = null;
+          if (timerActive && timeLeft > 0) {
+            interval = setInterval(() => {
+              setTimeLeft((time) => time - 1);
+            }, 1000);
+          } else if (timeLeft === 0) {
+            setTimerActive(false);
+            setSessionCompleted(true);
+            hapticFeedback("success");
+            setScreen("reflection");
+          }
+          return () => clearInterval(interval);
+        }, [timerActive, timeLeft]);
+
+        const formatTime = (seconds) => {
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        };
+
+        const saveGoal = () => {
+          setGoal(goalInput);
+          localStorage.setItem("focus_goal", goalInput);
+          localStorage.setItem("focus_has_set_goal", "true");
+          setIsFirstGoal(false);
+          hapticFeedback("medium");
+          setScreen("home");
+        };
+
+        const resetGoalAndData = () => {
+          // Clear ALL data
+          localStorage.removeItem("focus_weekly_data");
+          localStorage.removeItem("focus_last_session_date");
+          localStorage.removeItem("focus_completed_task");
+          localStorage.removeItem("focus_daily_task");
+
+          // Reset state
+          setTodayCompleted(false);
+          setCompletedTask("");
+          setDailyTask("");
+          setTaskInput("");
+
+          hapticFeedback("heavy");
+          setScreen("goal");
+        };
+
+        const startFocus = () => {
+          const task = taskInput.trim() || dailyTask;
+          setDailyTask(task);
+          localStorage.setItem("focus_daily_task", task);
+          setTimeLeft(estimatedTime * 60);
+          setTimerActive(true);
+          setShowEndWarning(false);
+          setSessionCompleted(false);
+
+          // Store session start data
+          localStorage.setItem(
+            "focus_session_start_time",
+            Date.now().toString(),
+          );
+          localStorage.setItem(
+            "focus_session_duration",
+            estimatedTime.toString(),
+          );
+          localStorage.setItem("focus_session_task", task);
+
+          hapticFeedback("heavy");
+          setScreen("focus");
+        };
+
+        const handleEndSession = () => {
+          const wasCompleted = timeLeft === 0;
+          const minutesPlanned = estimatedTime;
+          const minutesDone = Math.floor((estimatedTime * 60 - timeLeft) / 60);
+
+          if (!showEndWarning && !wasCompleted) {
+            setShowEndWarning(true);
+            setEndWarningText(
+              `You set aside ${minutesPlanned} minutes. You've done ${minutesDone}. Sure?`,
+            );
+            hapticFeedback("light");
+          } else {
+            setTimerActive(false);
+            setSessionCompleted(wasCompleted);
+
+            // Clear session data when ending
+            localStorage.removeItem("focus_session_start_time");
+            localStorage.removeItem("focus_session_duration");
+            localStorage.removeItem("focus_session_task");
+
+            setScreen("reflection");
+          }
+        };
+
+        const saveReflection = (status) => {
+          const today = new Date().toISOString().split("T")[0];
+          const weeklyData = JSON.parse(
+            localStorage.getItem("focus_weekly_data") || "[]",
+          );
+
+          const filteredData = weeklyData.filter((d) => d.date !== today);
+
+          filteredData.push({
+            date: today,
+            task: dailyTask,
+            status: status,
+            note: reflectionNote,
+            duration: estimatedTime,
+            completed: sessionCompleted,
+          });
+
+          localStorage.setItem(
+            "focus_weekly_data",
+            JSON.stringify(filteredData),
+          );
+          localStorage.setItem("focus_last_session_date", today);
+          localStorage.setItem("focus_completed_task", dailyTask);
+
+          // Clear active session data
+          localStorage.removeItem("focus_session_start_time");
+          localStorage.removeItem("focus_session_duration");
+          localStorage.removeItem("focus_session_task");
+
+          setTodayCompleted(true);
+          setCompletedTask(dailyTask);
+          setReflectionStatus(null);
+          setReflectionNote("");
+
+          hapticFeedback("success");
+          setScreen("home");
+        };
+
+        const getWeeklyStats = () => {
+          const weeklyData = JSON.parse(
+            localStorage.getItem("focus_weekly_data") || "[]",
+          );
+          const lastWeek = weeklyData.slice(-7);
+
+          const focused = lastWeek.filter(
+            (d) => d.status === "progress",
+          ).length;
+          const neutral = lastWeek.filter((d) => d.status === "neutral").length;
+          const distracted = lastWeek.filter(
+            (d) => d.status === "failed",
+          ).length;
+          const total = lastWeek.length;
+
+          return { focused, neutral, distracted, total, data: lastWeek };
+        };
+
+        const getWeeklyTruth = (stats) => {
+          const { focused, neutral, total } = stats;
+
+          if (total === 0) {
+            return "No data yet. Start today.";
+          }
+
+          if (focused === 0 && neutral === 0) {
+            return "Zero days focused. Your goal is still imaginary.";
+          }
+
+          if (focused === 0 && neutral > 0) {
+            return `${neutral} days of trying. Zero days of progress.`;
+          }
+
+          if (focused === 1) {
+            return "One focused day in seven. You are busy, not committed.";
+          }
+
+          if (focused === 2) {
+            return "Two focused days in seven. You are busy, not committed.";
+          }
+
+          if (focused === 3 || focused === 4) {
+            return "Half the week is something. The other half is the question.";
+          }
+
+          if (focused === 5) {
+            return "Five days is real. Can you make it six?";
+          }
+
+          if (focused === 6) {
+            return "Six days is real. Can you make it seven?";
+          }
+
+          if (focused === 7) {
+            return "Seven days. This is what commitment looks like.";
+          }
+
+          return "Keep going.";
+        };
+
+        // GOAL SCREEN
+        if (screen === "goal") {
+          return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-8">
+                {isFirstGoal && (
+                  <div className="text-center mb-8">
+                    <p className="text-sm text-gray-500 font-light">
+                      Most people change their goal in a week. Will you?
+                    </p>
+                  </div>
+                )}
+
+                <div className="text-center">
+                  <h2 className="text-2xl font-light mb-2">
+                    What do you want?
+                  </h2>
+                  <p className="text-gray-500 font-light">
+                    Say it like you mean it.
+                  </p>
+                </div>
+
+                <textarea
+                  value={goalInput}
+                  onChange={(e) => setGoalInput(e.target.value)}
+                  placeholder="Example: Become interview-ready as a fullstack developer"
+                  className="w-full text-center text-xl font-light border-2 border-gray-200 focus:border-black outline-none p-4 min-h-[120px] resize-none placeholder-gray-300"
+                  autoFocus
+                />
+
+                <button
+                  onClick={saveGoal}
+                  disabled={!goalInput.trim()}
+                  className="w-full py-4 bg-black text-white disabled:bg-gray-200 disabled:text-gray-400 transition-colors"
+                >
+                  Set Goal
+                </button>
+
+                {goal && (
+                  <button
+                    onClick={() => setScreen("home")}
+                    className="w-full py-3 text-gray-500 hover:text-black transition-colors"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // GOAL CHANGE WARNING SCREEN
+        if (screen === "goal-change-warning") {
+          return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-8">
+                <div className="text-center space-y-4">
+                  <h2 className="text-2xl font-light">
+                    Changing your goal means starting over.
+                  </h2>
+                  <p className="text-gray-500 font-light">
+                    Your weekly data will reset.
+                  </p>
+                  <p className="text-gray-500 font-light">Are you sure?</p>
+                </div>
+
+                <div className="space-y-4">
+                  <button
+                    onClick={() => setScreen("home")}
+                    className="w-full py-4 bg-black text-white hover:bg-gray-800 transition-colors"
+                  >
+                    Keep Current Goal
+                  </button>
+
+                  <button
+                    onClick={resetGoalAndData}
+                    className="w-full py-3 text-gray-500 hover:text-black transition-colors"
+                  >
+                    Start Over
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // HOME SCREEN - AFTER COMPLETING TODAY'S SESSION
+        if (screen === "home" && todayCompleted) {
+          return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-12">
+                <div className="text-center space-y-4">
+                  <p className="text-sm text-gray-400 uppercase tracking-wider">
+                    Your Goal
+                  </p>
+                  <h1 className="text-3xl font-light leading-tight px-4">
+                    {goal}
+                  </h1>
+                  {goal && (
+                    <button
+                      onClick={() => {
+                        setGoalInput(goal);
+                        setScreen("goal-change-warning");
+                      }}
+                      className="text-sm text-gray-400 hover:text-black transition-colors"
+                    >
+                      Change
+                    </button>
+                  )}
+                </div>
+
+                <div className="text-center space-y-4">
+                  <p className="text-sm text-gray-400 uppercase tracking-wider">
+                    Today's Work
+                  </p>
+                  <p className="text-xl font-light px-4">{completedTask}</p>
+                  <p className="text-3xl">✅</p>
+                </div>
+
+                <div className="text-center">
+                  <p className="text-gray-500 font-light">Today is done.</p>
+                </div>
+
+                <button
+                  onClick={() => setScreen("weekly")}
+                  className="w-full py-3 border-2 border-gray-200 text-gray-600 hover:border-black hover:text-black transition-colors"
+                >
+                  Weekly Truth
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        // HOME SCREEN - NORMAL (CAN SET TASK)
+        if (screen === "home") {
+          return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-12">
+                <div className="text-center space-y-4">
+                  <p className="text-sm text-gray-400 uppercase tracking-wider">
+                    Your Goal
+                  </p>
+                  {goal ? (
+                    <>
+                      <h1 className="text-3xl font-light leading-tight px-4">
+                        {goal}
+                      </h1>
+                      <button
+                        onClick={() => {
+                          setGoalInput(goal);
+                          setScreen("goal-change-warning");
+                        }}
+                        className="text-sm text-gray-400 hover:text-black transition-colors"
+                      >
+                        Change
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => setScreen("goal")}
+                      className="text-3xl font-light text-gray-300 hover:text-black transition-colors"
+                    >
+                      What matters enough to fight for?
+                    </button>
+                  )}
+                </div>
+
+                <div className="text-center space-y-6">
+                  <p className="text-sm text-gray-400 uppercase tracking-wider">
+                    Today's One Thing
+                  </p>
+                  {dailyTask && taskInput === "" ? (
+                    <>
+                      <p className="text-xl font-light px-4">{dailyTask}</p>
+                      <button
+                        onClick={startFocus}
+                        className="w-full py-4 bg-black text-white text-lg font-light hover:bg-gray-800 transition-colors"
+                      >
+                        Start
+                      </button>
+                    </>
+                  ) : (
+                    <div className="space-y-4">
+                      <input
+                        type="text"
+                        value={taskInput}
+                        onChange={(e) => setTaskInput(e.target.value)}
+                        placeholder="What's the one thing you'll do today? Choose carefully."
+                        className="w-full text-center text-xl font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
+                      />
+
+                      <div className="flex items-center justify-center space-x-4">
+                        <label className="text-sm text-gray-500">
+                          Estimated time:
+                        </label>
+                        <select
+                          value={estimatedTime}
+                          onChange={(e) =>
+                            setEstimatedTime(Number(e.target.value))
+                          }
+                          className="text-lg font-light border-b border-gray-300 focus:border-black outline-none"
+                        >
+                          <option value={15}>15 min</option>
+                          <option value={25}>25 min</option>
+                          <option value={45}>45 min</option>
+                          <option value={60}>60 min</option>
+                          <option value={90}>90 min</option>
+                        </select>
+                      </div>
+
+                      <button
+                        onClick={startFocus}
+                        disabled={!taskInput.trim()}
+                        className="w-full py-4 bg-black text-white disabled:bg-gray-200 disabled:text-gray-400 transition-colors"
+                      >
+                        Begin
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => setScreen("weekly")}
+                    className="text-sm text-gray-400 hover:text-black transition-colors uppercase tracking-wider"
+                  >
+                    Weekly Truth
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // FOCUS SCREEN
+        if (screen === "focus") {
+          const progress =
+            ((estimatedTime * 60 - timeLeft) / (estimatedTime * 60)) * 100;
+
+          return (
+            <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-16">
+                <div className="text-center">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">
+                    For your goal:
+                  </p>
+                  <p className="text-sm text-gray-400 font-light">{goal}</p>
+                </div>
+
+                <div className="text-center space-y-8">
+                  <h2 className="text-2xl font-light px-8">{dailyTask}</h2>
+
+                  <div className="tabular-nums">
+                    <p className="text-8xl font-extralight tracking-tight">
+                      {formatTime(timeLeft)}
+                    </p>
+                  </div>
+
+                  <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-white transition-all duration-1000 ease-linear"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center space-y-6">
+                  <button
+                    onClick={() => setTimerActive(!timerActive)}
+                    className="px-8 py-3 border border-white hover:bg-white hover:text-black transition-colors"
+                  >
+                    {timerActive ? "Pause" : "Resume"}
+                  </button>
+
+                  <div className="flex flex-col items-center space-y-2">
+                    {showEndWarning && (
+                      <p className="text-sm text-gray-400 font-light text-center px-4">
+                        {endWarningText}
+                      </p>
+                    )}
+                    <button
+                      onClick={handleEndSession}
+                      className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
+                    >
+                      {showEndWarning ? "End Anyway" : "End Session"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // REFLECTION SCREEN
+        if (screen === "reflection") {
+          const reflectionHeading = sessionCompleted
+            ? "You finished."
+            : "You stopped early.";
+
+          const reflectionSubtext = sessionCompleted
+            ? "Did it move you forward?"
+            : "Was it the task or your focus?";
+
+          return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-8">
+                <div className="text-center">
+                  <h2 className="text-2xl font-light mb-2">
+                    {reflectionHeading}
+                  </h2>
+                  <p className="text-gray-500 font-light">
+                    {reflectionSubtext}
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setReflectionStatus("progress")}
+                    className={`w-full text-left px-6 py-4 border transition-all ${
+                      reflectionStatus === "progress"
+                        ? "border-black bg-black text-white"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    <div className="font-light text-base">
+                      I worked on my one thing
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setReflectionStatus("neutral")}
+                    className={`w-full text-left px-6 py-4 border transition-all ${
+                      reflectionStatus === "neutral"
+                        ? "border-black bg-black text-white"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    <div className="font-light text-base">
+                      I worked on something else
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setReflectionStatus("failed")}
+                    className={`w-full text-left px-6 py-4 border transition-all ${
+                      reflectionStatus === "failed"
+                        ? "border-black bg-black text-white"
+                        : "border-gray-200 hover:border-gray-400"
+                    }`}
+                  >
+                    <div className="font-light text-base">
+                      Today was out of my control
+                    </div>
+                  </button>
+                </div>
+
+                {reflectionStatus && (
+                  <div className="space-y-4 pt-4">
+                    <input
+                      type="text"
+                      value={reflectionNote}
+                      onChange={(e) => setReflectionNote(e.target.value)}
+                      placeholder="One sentence (optional)"
+                      className="w-full text-center text-lg font-light border-b-2 border-gray-200 focus:border-black outline-none py-3 placeholder-gray-300"
+                    />
+
+                    <button
+                      onClick={() => saveReflection(reflectionStatus)}
+                      className="w-full py-3 bg-black text-white hover:bg-gray-800 transition-colors"
+                    >
+                      Done
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // WEEKLY TRUTH SCREEN
+        if (screen === "weekly") {
+          const stats = getWeeklyStats();
+          const truth = getWeeklyTruth(stats);
+
+          return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+              <div className="max-w-md w-full space-y-12">
+                <div className="text-center">
+                  <h2 className="text-2xl font-light mb-8">Weekly Truth</h2>
+
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-6xl font-light">{stats.focused}</p>
+                      <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">
+                        Days Focused
+                      </p>
+                    </div>
+
+                    {stats.neutral > 0 && (
+                      <div>
+                        <p className="text-4xl font-light text-gray-400">
+                          {stats.neutral}
+                        </p>
+                        <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">
+                          Days Trying
+                        </p>
+                      </div>
+                    )}
+
+                    {stats.distracted > 0 && (
+                      <div>
+                        <p className="text-4xl font-light text-gray-400">
+                          {stats.distracted}
+                        </p>
+                        <p className="text-sm text-gray-500 uppercase tracking-wider mt-2">
+                          Days Distracted
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="pt-6">
+                      <p className="text-gray-600 font-light">{truth}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {stats.data.length > 0 && (
+                  <div className="space-y-3">
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">
+                      Recent Days
+                    </p>
+                    {[...stats.data].reverse().map((day, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between py-2 border-b border-gray-100"
+                      >
+                        <span className="text-sm text-gray-600">
+                          {new Date(day.date).toLocaleDateString("en-US", {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
+                        <span className="text-lg">
+                          {day.status === "progress" && "✅"}
+                          {day.status === "neutral" && "😐"}
+                          {day.status === "failed" && "❌"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <button
+                  onClick={() => setScreen("home")}
+                  className="w-full py-3 border-2 border-gray-200 text-gray-600 hover:border-black hover:text-black transition-colors"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        return null;
+      };
+
+      ReactDOM.render(<FocusApp />, document.getElementById("app"));
     </script>
 
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+
     <!-- PWA Install Handler -->
     <script>
-        let deferredPrompt;
-        const installPrompt = document.getElementById('install-prompt');
-        const installButton = document.getElementById('install-button');
-        const installDismiss = document.getElementById('install-dismiss');
-        
-        // Check if already installed or dismissed
-        const isInstallDismissed = localStorage.getItem('focus_install_dismissed');
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
-                          || window.navigator.standalone 
-                          || document.referrer.includes('android-app://');
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Show install prompt if not dismissed and not standalone
-            if (!isInstallDismissed && !isStandalone) {
-                setTimeout(() => {
-                    installPrompt.style.display = 'block';
-                }, 3000); // Show after 3 seconds
-            }
-        });
-        
-        installButton.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                console.log('PWA installed');
-            }
-            
-            deferredPrompt = null;
-            installPrompt.style.display = 'none';
-        });
-        
-        installDismiss.addEventListener('click', () => {
-            localStorage.setItem('focus_install_dismissed', 'true');
-            installPrompt.style.display = 'none';
-        });
-        
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed'));
-            });
+      let deferredPrompt;
+      const installPrompt = document.getElementById("install-prompt");
+      const installButton = document.getElementById("install-button");
+      const installDismiss = document.getElementById("install-dismiss");
+
+      // Check if already installed or dismissed
+      const isInstallDismissed = localStorage.getItem(
+        "focus_install_dismissed",
+      );
+      const isStandalone =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone ||
+        document.referrer.includes("android-app://");
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        // Show install prompt if not dismissed and not standalone
+        if (!isInstallDismissed && !isStandalone) {
+          setTimeout(() => {
+            installPrompt.style.display = "block";
+          }, 3000); // Show after 3 seconds
         }
+      });
+
+      installButton.addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+
+        if (outcome === "accepted") {
+          console.log("PWA installed");
+        }
+
+        deferredPrompt = null;
+        installPrompt.style.display = "none";
+      });
+
+      installDismiss.addEventListener("click", () => {
+        localStorage.setItem("focus_install_dismissed", "true");
+        installPrompt.style.display = "none";
+      });
+
+      // Register service worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("sw.js")
+            .then((reg) => console.log("Service Worker registered"))
+            .catch((err) => console.log("Service Worker registration failed"));
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
