@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Azim — Work Experience</title>
+<meta name="description" content="Azim's professional experience — frontend and fullstack engineering across insurance, fintech, and enterprise software."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,1,300;9..144,1,400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#FAF7F2;--bg-2:#F2EDE5;--ink:#171717;--ink-2:#3F3F3F;--ink-3:#6B6B6B;
+  --rule:#E5DFD5;--accent:#C84A1F;--accent-soft:#F4E4DC;
+  --serif:"Fraunces","Georgia",serif;
+  --sans:"Inter",-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* ── Layout ── */
+.wrap{max-width:1180px;margin:0 auto;padding:0 40px}
+@media(max-width:720px){.wrap{padding:0 22px}}
+
+/* ── Nav ── */
+nav.top{
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:saturate(180%) blur(10px);
+  border-bottom:1px solid var(--rule);
+  transition:box-shadow .3s ease;
+}
+nav.top.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.07)}
+nav.top .row{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.brand{font-family:var(--serif);font-weight:400;font-size:18px;letter-spacing:-.01em}
+.brand .dot{color:var(--accent)}
+nav ul{list-style:none;display:flex;gap:32px;padding:0;margin:0;font-size:13px;color:var(--ink-3)}
+nav ul a{position:relative;padding-bottom:2px;transition:color .2s ease}
+nav ul a::after{content:"";position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--accent);transition:width .22s ease-out}
+nav ul a:hover{color:var(--accent)}
+nav ul a:hover::after{width:100%}
+nav ul a.active{color:var(--ink)}
+nav ul a.active::after{width:100%;background:var(--ink)}
+.nav-back{
+  font-family:var(--mono);font-size:12px;color:var(--ink-3);
+  display:flex;align-items:center;gap:8px;
+  transition:color .2s ease;
+}
+.nav-back:hover{color:var(--accent)}
+.nav-back::before{content:"←";transition:transform .2s ease}
+.nav-back:hover::before{transform:translateX(-3px)}
+@media(max-width:720px){nav ul{display:none}}
+
+/* ── Scroll reveal ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .42s ease-out,transform .42s ease-out}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}.d5{transition-delay:.35s}
+
+/* ── Page header ── */
+.page-header{
+  padding:90px 0 72px;
+  border-bottom:1px solid var(--rule);
+}
+.page-eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:28px;
+  opacity:0;animation:fadeUp .45s ease-out .1s forwards;
+}
+.page-header h1{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(44px,7vw,80px);line-height:1.0;
+  letter-spacing:-.03em;margin:0 0 24px;
+  opacity:0;animation:fadeUp .55s ease-out .2s forwards;
+}
+.page-header h1 em{font-style:italic;color:var(--accent);font-weight:300}
+.page-header p{
+  font-size:18px;color:var(--ink-2);max-width:580px;margin:0;line-height:1.65;
+  opacity:0;animation:fadeUp .5s ease-out .32s forwards;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Timeline ── */
+.timeline{padding:0 0 100px}
+
+/* ── Job entry ── */
+.job{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:64px;
+  padding:72px 0;
+  border-bottom:1px solid var(--rule);
+  position:relative;
+}
+.job:last-of-type{border-bottom:0}
+
+/* Left col */
+.job-left{position:sticky;top:96px;align-self:start}
+.job-index{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  letter-spacing:.1em;margin-bottom:10px;
+}
+.job-company{
+  font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.15;
+  letter-spacing:-.015em;margin:0 0 6px;
+  transition:color .2s ease;
+}
+.job:hover .job-company{color:var(--accent)}
+.job-period{
+  font-family:var(--mono);font-size:12px;color:var(--accent);
+  letter-spacing:.04em;margin-bottom:4px;
+}
+.job-location{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;margin-bottom:20px;
+}
+.job-role-badge{
+  display:inline-block;
+  font-family:var(--mono);font-size:11px;
+  background:var(--accent-soft);color:var(--accent);
+  padding:5px 10px;border-radius:2px;
+  letter-spacing:.04em;
+}
+
+/* Right col */
+.job-right{}
+.job-tagline{
+  font-family:var(--serif);font-size:20px;font-weight:300;
+  line-height:1.4;color:var(--ink-2);font-style:italic;
+  margin:0 0 28px;padding-bottom:24px;
+  border-bottom:1px solid var(--rule);
+}
+.contributions{list-style:none;padding:0;margin:0}
+.contributions li{
+  display:grid;grid-template-columns:20px 1fr;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--rule);
+  font-size:16px;color:var(--ink-2);line-height:1.6;
+  transition:color .18s ease;
+}
+.contributions li:hover{color:var(--ink)}
+.contributions li:last-child{border-bottom:0}
+.contributions li::before{
+  content:"→";color:var(--accent);font-family:var(--mono);font-size:12px;
+  padding-top:3px;transition:transform .2s ease;
+}
+.contributions li:hover::before{transform:translateX(3px)}
+
+/* metric callout inside a bullet */
+.metric{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  background:var(--accent-soft);color:var(--accent);
+  padding:2px 7px;border-radius:2px;margin-left:4px;
+  white-space:nowrap;
+}
+
+/* ── Early career strip ── */
+.early{
+  background:var(--ink);color:var(--bg);
+  padding:64px 0;
+}
+.early .eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(250,247,242,.45);margin-bottom:32px;
+  display:flex;align-items:center;gap:10px;
+}
+.early .eyebrow::before{content:"";width:20px;height:1px;background:var(--accent)}
+.early h2{
+  font-family:var(--serif);font-weight:300;font-size:clamp(28px,3.5vw,40px);
+  color:var(--bg);margin:0 0 40px;letter-spacing:-.02em;line-height:1.1;
+}
+.early-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);
+}
+.early-cell{
+  background:var(--ink);padding:28px 32px;
+  transition:background .2s ease;
+}
+.early-cell:hover{background:rgba(255,255,255,.04)}
+.early-cell .ec-period{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.06em;margin-bottom:8px}
+.early-cell .ec-company{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--bg);margin:0 0 4px;line-height:1.2}
+.early-cell .ec-role{font-family:var(--mono);font-size:12px;color:rgba(250,247,242,.5);letter-spacing:.04em}
+@media(max-width:600px){.early-grid{grid-template-columns:1fr}}
+
+/* ── Skills snapshot ── */
+.snapshot{padding:80px 0;border-top:1px solid var(--rule)}
+.snapshot .eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.snapshot .eyebrow::before{content:"";width:20px;height:1px;background:var(--accent)}
+.snapshot h2{
+  font-family:var(--serif);font-weight:300;font-size:clamp(32px,4vw,48px);
+  letter-spacing:-.02em;margin:0 0 48px;line-height:1.05;
+}
+.skills-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--rule);
+}
+.skill-col{padding:28px 24px 28px 0;border-right:1px solid var(--rule)}
+.skill-col:last-child{border-right:0;padding-right:0}
+.skill-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 16px}
+.skill-col ul{list-style:none;padding:0;margin:0}
+.skill-col li{
+  padding:7px 0;font-size:14px;color:var(--ink);
+  border-bottom:1px dashed var(--rule);
+  transition:color .18s ease,padding-left .18s ease;cursor:default;
+}
+.skill-col li:hover{color:var(--accent);padding-left:6px}
+.skill-col li:last-child{border-bottom:0}
+@media(max-width:880px){
+  .skills-row{grid-template-columns:1fr 1fr}
+  .skill-col:nth-child(2){border-right:0;padding-right:0}
+  .skill-col:nth-child(3){border-right:1px solid var(--rule);padding-right:24px}
+  .skill-col:nth-child(3),.skill-col:nth-child(4){padding-top:24px}
+}
+@media(max-width:560px){
+  .skills-row{grid-template-columns:1fr}
+  .skill-col{border-right:0 !important;padding-right:0 !important;border-bottom:1px solid var(--rule)}
+  .skill-col:last-child{border-bottom:0}
+}
+
+/* ── CTA ── */
+.cta{padding:100px 0 90px;border-top:1px solid var(--rule)}
+.cta h2{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(40px,6vw,68px);line-height:1.03;
+  letter-spacing:-.03em;margin:0 0 16px;max-width:12ch;
+}
+.cta h2 em{font-style:italic;color:var(--accent)}
+.cta p{font-size:17px;color:var(--ink-2);max-width:500px;margin:0 0 36px;line-height:1.6}
+.cta-links{
+  display:flex;flex-wrap:wrap;gap:16px 32px;
+  padding-top:24px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:13px;
+}
+.cta-links a{
+  border-bottom:1px solid var(--rule);padding-bottom:4px;
+  transition:color .2s ease,border-color .2s ease;
+}
+.cta-links a:hover{color:var(--accent);border-color:var(--accent)}
+.cta-links a.primary{
+  background:var(--accent);color:var(--bg);border:none;
+  padding:10px 20px;border-radius:2px;
+  transition:background .2s ease,transform .15s ease;
+}
+.cta-links a.primary:hover{background:var(--ink);transform:translateY(-1px)}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--rule);padding:28px 0;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+footer .inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* ── Responsive job layout ── */
+@media(max-width:900px){
+  .job{grid-template-columns:1fr;gap:28px;padding:52px 0}
+  .job-left{position:static}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top" id="topnav">
+  <div class="wrap row">
+    <div class="brand">Azim<span class="dot">.</span></div>
+    <ul>
+      <li><a href="index.html">Work</a></li>
+      <li><a href="experience.html" class="active">Experience</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a class="nav-back" href="index.html">Back to portfolio</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="wrap">
+    <div class="page-eyebrow">Work experience · 2020 — 2026</div>
+    <h1>Five years.<br/><em>Always shipping.</em></h1>
+    <p>From junior web programmer to leading frontend tracks across insurance, fintech, and enterprise platforms. Here's the full picture.</p>
+  </div>
+</header>
+
+<!-- TIMELINE -->
+<div class="timeline">
+  <div class="wrap">
+
+    <!-- B-ONE -->
+    <article class="job reveal">
+      <div class="job-left">
+        <div class="job-index">01 · 2025 – 2026</div>
+        <h2 class="job-company">B-One Consulting</h2>
+        <div class="job-period">Feb 2025 – Feb 2026</div>
+        <div class="job-location">Denpasar · Remote</div>
+        <div class="job-role-badge">Fullstack Engineer</div>
+      </div>
+      <div class="job-right">
+        <p class="job-tagline">Global business transformation across Europe, Africa, the Middle East, and Southeast Asia — building internal systems that made operations actually work.</p>
+        <ul class="contributions">
+          <li>
+            Optimised the service API for the Plug app — profiled, refactored, and re-architected the bottlenecks until the response time dropped to a fraction of what it was.
+            <span class="metric">16× faster</span>
+          </li>
+          <li>
+            Designed and built a suite of internal tools covering HRIS, project and client contract management, and invoice payment workflows — replacing a tangle of spreadsheets with one unified system.
+            <span class="metric">27% efficiency gain</span>
+          </li>
+          <li>
+            Led technical support for 2 developers — unblocking complex issues, reviewing approaches, and keeping the project moving without sacrificing quality.
+          </li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- OBS -->
+    <article class="job reveal">
+      <div class="job-left">
+        <div class="job-index">02 · 2024</div>
+        <h2 class="job-company">OBS Pte Ltd</h2>
+        <div class="job-period">Mar 2024 – Aug 2024</div>
+        <div class="job-location">Jakarta Timur · On-site</div>
+        <div class="job-role-badge">Frontend Engineer</div>
+      </div>
+      <div class="job-right">
+        <p class="job-tagline">Singapore-based banking and financial software — taking a fintech trading interface from early mockups to production, then rebuilding the architecture so it could actually scale.</p>
+        <ul class="contributions">
+          <li>
+            Built the FX currency bidding application from initial mockups through to a production-ready React.js app — improving usability and task efficiency for the trading team.
+          </li>
+          <li>
+            Introduced a micro-frontend architecture and monorepo structure, making the system easier to maintain and allowing individual modules to be deployed without downtime.
+          </li>
+          <li>
+            Overhauled build bundling and asset loading — cutting load times significantly and making the app feel like a different product.
+            <span class="metric">4× faster loads</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- IFG LIFE -->
+    <article class="job reveal">
+      <div class="job-left">
+        <div class="job-index">03 · 2023 – 2024</div>
+        <h2 class="job-company">IFG Life</h2>
+        <div class="job-period">Feb 2023 – Feb 2024</div>
+        <div class="job-location">Jakarta Pusat · On-site</div>
+        <div class="job-role-badge">Lead Frontend Developer</div>
+      </div>
+      <div class="job-right">
+        <p class="job-tagline">Part of IFG Group — Indonesia's state-owned financial holding. Led frontend development on a mobile insurance platform used by millions of policyholders.</p>
+        <ul class="contributions">
+          <li>
+            Translated business requirements into scalable frontend architecture — closing the gap between what product wanted and what engineering could deliver.
+            <span class="metric">~30% faster feature delivery</span>
+          </li>
+          <li>
+            Enforced coding standards and systematic code reviews, enabling the product and team to grow without requiring major refactors.
+            <span class="metric">2× team growth</span>
+          </li>
+          <li>
+            Resolved complex technical challenges that were blocking delivery — compressed cycles by cutting unnecessary complexity and rework.
+            <span class="metric">25–40% faster delivery</span>
+          </li>
+          <li>
+            Mentored developers across seniority levels — paired on architecture decisions, reviewed code with context, and built capability rather than dependency.
+            <span class="metric">20–30% team productivity gain</span>
+          </li>
+          <li>
+            Made early architectural calls that defined the project's structure — reducing the accumulated technical risk that typically compounds over a year-long build.
+            <span class="metric">~35% less rework</span>
+          </li>
+          <li>
+            Streamlined team workflows and communication patterns so delivery became more predictable and deployment-ready at any given point.
+            <span class="metric">2× deployment speed</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- WGS -->
+    <article class="job reveal">
+      <div class="job-left">
+        <div class="job-index">04 · 2022 – 2023</div>
+        <h2 class="job-company">WGS</h2>
+        <div class="job-period">Feb 2022 – Feb 2023</div>
+        <div class="job-location">Kota Bandung · On-site</div>
+        <div class="job-role-badge">Programmer</div>
+      </div>
+      <div class="job-right">
+        <p class="job-tagline">Enterprise software solutions across Southeast Asia — converting design work into production applications and building the frontend habits that have stuck ever since.</p>
+        <ul class="contributions">
+          <li>
+            Converted UI/UX designs and mockups into functional, production-ready applications — bridging the gap between what was designed and what users actually got.
+            <span class="metric">20–30% better task efficiency</span>
+          </li>
+          <li>
+            Integrated frontend applications with RESTful APIs and backend services — reliable data flow, no loose ends.
+          </li>
+          <li>
+            Introduced reusable components and a modular architecture — the kind of structural groundwork that pays back every time someone touches the codebase later.
+            <span class="metric">25% less future dev time</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+
+  </div>
+</div>
+
+<!-- EARLY CAREER -->
+<section class="early">
+  <div class="wrap">
+    <div class="eyebrow reveal">Before that</div>
+    <h2 class="reveal d1">Where it started.</h2>
+    <div class="early-grid">
+      <div class="early-cell reveal d2">
+        <div class="ec-period">2021</div>
+        <div class="ec-company">PT Sopwer Teknologi</div>
+        <div class="ec-role">Junior Web Programmer</div>
+      </div>
+      <div class="early-cell reveal d3">
+        <div class="ec-period">2020</div>
+        <div class="ec-company">Clodeo</div>
+        <div class="ec-role">Data Entry Intern</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS SNAPSHOT -->
+<section class="snapshot">
+  <div class="wrap">
+    <div class="eyebrow reveal">What I work with</div>
+    <h2 class="reveal d1">Full stack, design to deploy.</h2>
+    <div class="skills-row">
+      <div class="skill-col reveal d1">
+        <h4>Design</h4>
+        <ul>
+          <li>Figma</li>
+          <li>Design systems</li>
+          <li>Prototyping</li>
+          <li>WCAG accessibility</li>
+          <li>Journey mapping</li>
+        </ul>
+      </div>
+      <div class="skill-col reveal d2">
+        <h4>Frontend</h4>
+        <ul>
+          <li>React / Next.js</li>
+          <li>TypeScript</li>
+          <li>React Native</li>
+          <li>Tailwind, shadcn/ui</li>
+          <li>Redux, Zustand</li>
+        </ul>
+      </div>
+      <div class="skill-col reveal d3">
+        <h4>Backend</h4>
+        <ul>
+          <li>Node.js / NestJS</li>
+          <li>Go — Gin, Echo</li>
+          <li>PostgreSQL, MongoDB</li>
+          <li>REST & GraphQL</li>
+          <li>Redis, pgvector</li>
+        </ul>
+      </div>
+      <div class="skill-col reveal d4">
+        <h4>Infra & AI</h4>
+        <ul>
+          <li>Docker, AWS, GCP</li>
+          <li>CI/CD (GitHub Actions)</li>
+          <li>RAG & LLM integration</li>
+          <li>Prompt engineering</li>
+          <li>Microservices</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <h2 class="reveal">Seen enough? <em>Let's talk.</em></h2>
+    <p class="reveal d1">Open to UI/UX developer, product engineer, and design-engineering roles. Remote-friendly, GMT+7.</p>
+    <div class="cta-links reveal d2">
+      <a href="mailto:budazimbud@gmail.com" class="primary">budazimbud@gmail.com</a>
+      <a href="index.html">← Back to portfolio</a>
+      <a href="https://www.linkedin.com/in/azim-bud/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/tech-azim" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="inner">
+      <div>© 2026 Azim · Designed &amp; built by hand</div>
+      <div>Last updated · May 2026</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+window.addEventListener('scroll', () => {
+  document.getElementById('topnav').classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+</script>
+</body>
+</html>
