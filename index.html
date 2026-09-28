@@ -21,11 +21,9 @@
     as="font" crossorigin="" type="font/woff2" />
   <link rel="preload" href="https://www.jingjinghan.com/_next/static/media/f9261f5409942047-s.p.0blmo0s-v3pxp.woff2"
     as="font" crossorigin="" type="font/woff2" />
-  <link rel="preload" as="image"
-    href="https://www.jingjinghan.com/images/cs/first-mover/00-1gxmw8jD2K7expU4lIEX7iJjY04.png" />
-  <link rel="preload" as="image" href="https://www.jingjinghan.com/images/sw-fosterhealth.png" />
-  <link rel="preload" as="image" href="https://www.jingjinghan.com/images/sw-crypto.png" />
-  <link rel="preload" as="image" href="https://www.jingjinghan.com/images/sw-salona.png" />
+  <link rel="preload" as="image" href="images/ifg_life.jpg" />
+  <link rel="preload" as="image" href="images/dimedika.png" />
+  <link rel="preload" as="image" href="images/eroses.png" />
   <link rel="stylesheet" href="https://www.jingjinghan.com/_next/static/chunks/06olnurac842u.css"
     data-precedence="next" />
   <link rel="preload" as="script" fetchPriority="low"
@@ -60,9 +58,8 @@
   <meta name="twitter:title" content="Azim&#x27;s Portfolio" />
   <meta name="twitter:description"
     content="UI/UX developer &amp; product engineer dedicated to building seamless, high-performance web applications and intuitive design systems." />
-  <meta name="twitter:image" content="https://www.jingjinghan.com/seo/og-image.png" />
-  <link rel="icon" href="https://www.jingjinghan.com/favicon.ico?favicon.0jswczi4io716.ico" sizes="256x256"
-    type="image/x-icon" />
+  <meta name="twitter:image" content="https://tech-azim.github.io/seo/og-image.png" />
+  <link rel="icon" href="/favicon.ico" sizes="256x256" type="image/x-icon" />
   <link rel="icon" href="https://www.jingjinghan.com/seo/favicon.png" />
   <link rel="apple-touch-icon" href="https://www.jingjinghan.com/seo/favicon.png" />
   <script src="https://www.jingjinghan.com/_next/static/chunks/03~yq9q893hmn.js" noModule=""></script>
@@ -5851,6 +5848,10 @@
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
+    header {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
     header.nav-hidden {
       transform: translateY(-130%) !important;
     }
@@ -5859,71 +5860,35 @@
     .nav-native-cursor {
       max-width: 1200px;
       margin: 0 auto;
-      overflow: hidden !important;
-      transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-        padding 0.35s ease,
-        background-color 0.35s ease,
-        border-color 0.35s ease,
-        box-shadow 0.35s ease !important;
+      transition: background-color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        padding 0.3s ease !important;
     }
 
-    /* STATE 1: DEFAULT DI HERO SECTION (Top Page) */
-    .nav-dots-container {
-      display: none !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
-    .nav-links-container {
-      display: flex !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      transition: opacity 0.35s ease, visibility 0.35s ease !important;
-    }
-
-    /* STATE 2: SAAT DI-SCROLL (Mode Ringkas Kapsul Pendek) */
+    /* SAAT DI-SCROLL: Mengambang dengan glassmorphism kuat */
     header.scrolled .nav-native-cursor {
-      max-width: 400px !important;
-      padding: 0.4rem 1.2rem !important;
-      background-color: rgba(10, 10, 10, 0.92) !important;
-      border-color: rgba(255, 255, 255, 0.2) !important;
-      backdrop-filter: blur(20px) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+      background-color: rgba(10, 10, 10, 0.88) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+      backdrop-filter: blur(20px) saturate(180%) !important;
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.8) !important;
+      padding-top: 0.35rem !important;
+      padding-bottom: 0.35rem !important;
     }
 
-    header.scrolled .nav-links-container {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
+    /* Mobile Drawer */
+    #mobile-drawer {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    header.scrolled .nav-dots-container {
-      display: flex !important;
-      position: static !important;
+    #mobile-drawer.is-open {
       opacity: 1 !important;
-      visibility: visible !important;
       pointer-events: auto !important;
-    }
-
-    /* STATE 3: HOVER PADA KAPSUL RINGKAS -> Mekar Kembali & Tampilkan Menu */
-    header.scrolled .nav-native-cursor:hover {
-      max-width: 960px !important;
-    }
-
-    header.scrolled .nav-native-cursor:hover .nav-links-container {
-      display: flex !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    header.scrolled .nav-native-cursor:hover .nav-dots-container {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
+      transform: translateY(0) !important;
     }
 
     /* ==========================================
@@ -6244,6 +6209,351 @@
       animation: caret-blink 0.8s infinite;
       display: inline-block !important;
     }
+
+    /* ==========================================
+       PORTFOLIO (#work) RESPONSIVE & CLEAN UI
+       ========================================== */
+    .fw-carousel-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .fw-card {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      aspect-ratio: 4 / 3;
+      min-height: 380px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #0a0a0a;
+      touch-action: pan-y;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    /* Permanent deep bottom gradient ensuring white text is 100% readable over ANY image (dark or light) */
+    .fw-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 75%;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.96) 0%,
+        rgba(0, 0, 0, 0.88) 35%,
+        rgba(0, 0, 0, 0.5) 65%,
+        transparent 100%
+      ) !important;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    /* Top vignette ensuring counter and badges are always visible */
+    .fw-top-scrim {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 90px;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.75) 0%,
+        rgba(0, 0, 0, 0.3) 65%,
+        transparent 100%
+      ) !important;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .fw-badge {
+      background: rgba(0, 0, 0, 0.75) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+    }
+
+    .sw-info {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20 !important;
+      pointer-events: none;
+    }
+
+    #fw-title {
+      color: #ffffff !important;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 0.95) !important;
+    }
+
+    #fw-desc {
+      color: rgba(255, 255, 255, 0.92) !important;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95) !important;
+    }
+
+    @media (min-width: 640px) {
+      .fw-card {
+        aspect-ratio: 16 / 10;
+        min-height: 420px;
+        border-radius: 20px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .fw-card {
+        aspect-ratio: 16 / 9;
+        max-height: 580px;
+        border-radius: 24px;
+      }
+    }
+
+    /* Prev / Next Navigation Buttons */
+    .fw-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 30;
+      flex-shrink: 0;
+    }
+
+    .fw-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: #ffffff;
+      transform: scale(1.08);
+    }
+
+    .fw-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* On mobile / tablet screens (< 1024px): float arrows over the card edges cleanly */
+    @media (max-width: 1023px) {
+      .fw-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 38px;
+        height: 38px;
+        background: rgba(10, 10, 10, 0.75);
+      }
+      .fw-prev-btn {
+        left: 12px;
+      }
+      .fw-next-btn {
+        right: 12px;
+      }
+      .fw-nav-btn:hover {
+        transform: translateY(-50%) scale(1.08);
+      }
+      .fw-nav-btn:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .fw-nav-btn {
+        width: 50px;
+        height: 50px;
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .fw-nav-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #ffffff;
+      }
+    }
+
+    /* Tab Switcher Pills */
+    .fw-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 640px) {
+      .fw-tab-btn {
+        padding: 8px 18px;
+        font-size: 14px;
+      }
+    }
+
+    .fw-tab-btn:hover {
+      color: rgba(255, 255, 255, 0.85);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .fw-tab-btn.is-active {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.16) !important;
+      border-color: rgba(255, 255, 255, 0.35) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      font-weight: 500;
+    }
+
+    /* Tech Stack & Capabilities Accordion */
+    .tech-accordion {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .tech-accordion-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .tech-accordion-item:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .tech-accordion-item.is-open {
+      background-color: rgba(255, 255, 255, 0.035);
+      border-bottom-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .tech-accordion-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      text-align: left;
+      outline: none;
+      user-select: none;
+    }
+
+    @media (min-width: 640px) {
+      .tech-accordion-trigger {
+        padding: 2rem 0;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .tech-accordion-trigger {
+        padding: 2.25rem 0;
+      }
+    }
+
+    .tech-accordion-title {
+      color: rgba(255, 255, 255, 0.75);
+      transition: color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tech-accordion-item:hover .tech-accordion-title {
+      color: #ffffff;
+      transform: translateX(4px);
+    }
+
+    .tech-accordion-item.is-open .tech-accordion-title {
+      color: #ffffff;
+      transform: translateX(6px);
+    }
+
+    .tech-accordion-item.is-open .tech-accordion-num {
+      color: var(--accent-green, #10b981) !important;
+    }
+
+    .tech-accordion-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    @media (min-width: 640px) {
+      .tech-accordion-icon {
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    .tech-accordion-item:hover .tech-accordion-icon {
+      border-color: rgba(255, 255, 255, 0.45);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      transform: scale(1.05);
+    }
+
+    .tech-accordion-item.is-open .tech-accordion-icon {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      transform: rotate(45deg);
+    }
+
+    .tech-accordion-item.is-open:hover .tech-accordion-icon {
+      background: #ffffff;
+      color: #000000;
+      transform: rotate(45deg) scale(1.06);
+    }
+
+    .tech-accordion-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .tech-accordion-item.is-open .tech-accordion-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .tech-accordion-panel-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* Hide custom cursor on mobile / touch devices to prevent artifact circles */
+    @media (max-width: 1024px), (hover: none) and (pointer: coarse) {
+      .custom-cursor-dot {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -6277,64 +6587,56 @@
   </div>
   <header class="fixed inset-x-0 top-0 z-[100] flex justify-center px-4 pt-4">
     <div
-      class="nav-native-cursor flex w-full items-center justify-between rounded-full border border-white/10 bg-black/30 px-3 py-2 backdrop-blur-md">
+      class="nav-native-cursor flex w-full items-center justify-between rounded-full border border-white/10 bg-black/40 px-3.5 py-2 backdrop-blur-md">
 
       <!-- Left: Profile Avatar & Name -->
       <a href="#top" class="group flex items-center gap-2.5" aria-label="Home">
         <span
           class="relative shrink-0 transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-110">
-          <img alt="Azim" class="h-11 w-11 rounded-full object-cover ring-1 ring-white/20"
+          <img alt="Azim" class="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover ring-1 ring-white/20"
             src="images/azim-avatar.png" />
         </span>
         <span class="font-blinker whitespace-nowrap text-[18px] text-white">Azim.</span>
       </a>
 
-      <!-- Right Container -->
+      <!-- Desktop Links Container (>= 768px) -->
       <div class="relative hidden items-center justify-end md:flex">
-
-        <!-- State 1: 3 Animated Green Dots (Muncul saat dikuncupkan) -->
-        <button type="button" aria-label="Show menu"
-          class="nav-dots-container absolute right-0 flex items-center gap-1.5 px-2 py-2 opacity-0 pointer-events-none">
-          <span class="nav-dot h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
-          <span class="nav-dot h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
-          <span class="nav-dot h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
-        </button>
-
-        <!-- State 2: Links + Divider + LinkedIn + Gmail (Muncul saat lebar / di-hover) -->
-        <div class="nav-links-container flex items-center gap-5 opacity-100">
-          <nav class="font-gilroy flex items-center gap-6 text-[16px] text-white md:gap-8 md:text-[18px]">
-            <a href="/design"
-              class="group relative inline-flex items-center gap-1 py-1 transition-colors duration-300 hover:text-[var(--accent)]">Design</a>
-            <a href="/performance"
-              class="group relative inline-flex items-center gap-1 py-1 transition-colors duration-300 hover:text-[var(--accent)]">Performances</a>
-            <a href="/about"
-              class="group relative inline-flex items-center gap-1 py-1 transition-colors duration-300 hover:text-[var(--accent)]">About</a>
-            <a href="https://remaketool.framer.website/" target="_blank" rel="noopener noreferrer"
-              class="group relative inline-flex items-center gap-1 py-1 transition-colors duration-300 hover:text-[var(--accent)]">
-              Resources <span aria-hidden="true" class="text-[0.7em]">↗</span>
+        <div class="nav-links-container flex items-center gap-4 lg:gap-6 opacity-100">
+          <nav class="font-gilroy flex items-center gap-5 text-[15px] text-white/90 lg:gap-7 lg:text-[16px]">
+            <a href="#work"
+              class="group relative inline-flex items-center py-1 transition-colors duration-300 hover:text-[var(--accent)]">Work</a>
+            <a href="experience.html"
+              class="group relative inline-flex items-center py-1 transition-colors duration-300 hover:text-[var(--accent)]">Experience</a>
+            <a href="#web"
+              class="group relative inline-flex items-center py-1 transition-colors duration-300 hover:text-[var(--accent)]">Capabilities</a>
+            <a href="about.html"
+              class="group relative inline-flex items-center py-1 transition-colors duration-300 hover:text-[var(--accent)]">About</a>
+            <a href="shop.html"
+              class="group relative inline-flex items-center py-1 transition-colors duration-300 hover:text-[var(--accent)]">
+              Shop <span aria-hidden="true" class="text-[0.7em] ml-0.5 opacity-60">↗</span>
             </a>
+            <a href="#contact"
+              class="group relative inline-flex items-center py-1 transition-colors duration-300 hover:text-[var(--accent)]">Contact</a>
           </nav>
 
-          <!-- Garis Pemisah (Vertical Divider) -->
+          <!-- Vertical Divider -->
           <span class="h-4 w-px bg-white/20" aria-hidden="true"></span>
 
           <!-- Social Icons: LinkedIn & Email -->
-          <div class="flex items-center gap-3.5">
-            <!-- LinkedIn Icon -->
-            <a href="https://www.linkedin.com/in/hanjingjing/" target="_blank" rel="noopener noreferrer"
+          <div class="flex items-center gap-3">
+            <a href="https://www.linkedin.com/in/azim-bud/" target="_blank" rel="noopener noreferrer"
               aria-label="LinkedIn"
-              class="transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:rotate-6 hover:scale-125">
-              <svg viewBox="0 0 48 48" width="24" height="24" class="h-7 w-7 drop-shadow-sm">
+              class="transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:rotate-6 hover:scale-110">
+              <svg viewBox="0 0 48 48" width="22" height="22" class="h-6 w-6 drop-shadow-sm">
                 <rect width="48" height="48" rx="12" fill="#2867B2"></rect>
                 <path fill="#fff"
                   d="M14 19h5v15h-5V19zm2.5-8a2.9 2.9 0 1 1 0 5.8 2.9 2.9 0 0 1 0-5.8zM22 19h4.8v2.05h.07c.67-1.2 2.3-2.46 4.73-2.46 5.06 0 6 3.2 6 7.36V34h-5v-6.6c0-1.57-.03-3.6-2.3-3.6-2.3 0-2.66 1.72-2.66 3.49V34h-5V19z">
                 </path>
               </svg>
             </a>
-            <!-- Gmail Icon -->
             <a href="mailto:budazimbud@gmail.com" aria-label="Email"
-              class="transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:rotate-6 hover:scale-125">
-              <svg viewBox="0 0 48 48" width="24" height="24" class="h-7 w-7 drop-shadow-sm">
+              class="transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:rotate-6 hover:scale-110">
+              <svg viewBox="0 0 48 48" width="22" height="22" class="h-6 w-6 drop-shadow-sm">
                 <path fill="#4caf50" d="M45 16.2l-5 2.75-5 4.75L35 40h7a3 3 0 0 0 3-3V16.2z"></path>
                 <path fill="#1e88e5" d="M3 16.2l3.614 1.71L13 23.7V40H6a3 3 0 0 1-3-3V16.2z"></path>
                 <path fill="#e53935" d="M35 11.2L24 19.45 13 11.2 12 17l1 6.7 11 8.25 11-8.25 1-6.7z"></path>
@@ -6343,29 +6645,94 @@
               </svg>
             </a>
           </div>
-
         </div>
-
       </div>
+
+      <!-- Mobile Hamburger Button (< 768px) -->
+      <button type="button" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false"
+        class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white transition-all duration-300 hover:border-white/30 hover:bg-white/10 md:hidden">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
 
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobile-drawer" class="fixed inset-0 z-[150] flex flex-col justify-between bg-black/95 px-6 py-8 backdrop-blur-2xl md:hidden" aria-hidden="true">
+    <!-- Drawer Header -->
+    <div class="flex items-center justify-between">
+      <a href="#top" class="mobile-drawer-link flex items-center gap-2.5">
+        <img alt="Azim" class="h-10 w-10 rounded-full object-cover ring-1 ring-white/20" src="images/azim-avatar.png" />
+        <span class="font-blinker text-[18px] text-white">Azim.</span>
+      </a>
+      <button type="button" id="mobile-close-btn" aria-label="Close navigation menu"
+        class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-transform hover:scale-105">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Drawer Navigation Links -->
+    <nav class="my-auto flex flex-col gap-4 py-6">
+      <a href="#work" class="mobile-drawer-link group flex items-baseline justify-between border-b border-white/10 pb-3 font-blinker text-3xl font-medium tracking-tight text-white/80 transition-colors hover:text-white">
+        <span>01 &nbsp; Work</span>
+        <span class="font-gilroy text-xs tracking-wider uppercase text-white/40 group-hover:text-white">Portfolio ↗</span>
+      </a>
+      <a href="experience.html" class="mobile-drawer-link group flex items-baseline justify-between border-b border-white/10 pb-3 font-blinker text-3xl font-medium tracking-tight text-white/80 transition-colors hover:text-white">
+        <span>02 &nbsp; Experience</span>
+        <span class="font-gilroy text-xs tracking-wider uppercase text-white/40 group-hover:text-white">Career ↗</span>
+      </a>
+      <a href="#web" class="mobile-drawer-link group flex items-baseline justify-between border-b border-white/10 pb-3 font-blinker text-3xl font-medium tracking-tight text-white/80 transition-colors hover:text-white">
+        <span>03 &nbsp; Capabilities</span>
+        <span class="font-gilroy text-xs tracking-wider uppercase text-white/40 group-hover:text-white">Tech Stack ↗</span>
+      </a>
+      <a href="about.html" class="mobile-drawer-link group flex items-baseline justify-between border-b border-white/10 pb-3 font-blinker text-3xl font-medium tracking-tight text-white/80 transition-colors hover:text-white">
+        <span>04 &nbsp; About</span>
+        <span class="font-gilroy text-xs tracking-wider uppercase text-white/40 group-hover:text-white">Story &amp; Setup ↗</span>
+      </a>
+      <a href="shop.html" class="mobile-drawer-link group flex items-baseline justify-between border-b border-white/10 pb-3 font-blinker text-3xl font-medium tracking-tight text-white/80 transition-colors hover:text-white">
+        <span>05 &nbsp; Shop</span>
+        <span class="font-gilroy text-xs tracking-wider uppercase text-white/40 group-hover:text-white">Developer Tools ↗</span>
+      </a>
+      <a href="#contact" class="mobile-drawer-link group flex items-baseline justify-between border-b border-white/10 pb-3 font-blinker text-3xl font-medium tracking-tight text-white/80 transition-colors hover:text-white">
+        <span>06 &nbsp; Contact</span>
+        <span class="font-gilroy text-xs tracking-wider uppercase text-white/40 group-hover:text-white">Get in touch ↗</span>
+      </a>
+    </nav>
+
+    <!-- Drawer Footer -->
+    <div class="flex flex-col gap-3 pt-4 border-t border-white/10">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 font-gilroy text-xs text-white/60">
+          <span class="h-2 w-2 rounded-full" style="background:var(--accent-green)"></span>
+          Open to roles · 2026
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="https://www.linkedin.com/in/azim-bud/" target="_blank" rel="noopener noreferrer" class="font-gilroy text-xs uppercase tracking-widest text-white/70 hover:text-white">LinkedIn</a>
+          <span class="text-white/20">/</span>
+          <a href="mailto:budazimbud@gmail.com" class="font-gilroy text-xs uppercase tracking-widest text-white/70 hover:text-white">Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
   <main id="top" class="bg-black">
     <section class="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 text-center"
       style="background:#000000 !important;">
-      <!-- EXACT REFERENCE MATCH HERO MOUSE TRAIL ELEMENTS -->
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/creative-02.jpg" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/creative-12.jpg" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/creative-05.jpg" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/creative-06.jpeg" />
-      <img aria-hidden="true" alt="" class="trail-img"
-        src="https://www.jingjinghan.com/images/cs/first-mover/00-1gxmw8jD2K7expU4lIEX7iJjY04.png" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/sw-fosterhealth.png" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/sw-crypto.png" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/sw-salona.png" />
-      <img aria-hidden="true" alt="" class="trail-img"
-        src="https://www.jingjinghan.com/images/cs/Nook/Nook_Cover.png" />
-      <img aria-hidden="true" alt="" class="trail-img" src="https://www.jingjinghan.com/images/web-6r1cr.png" />
+      <!-- HERO MOUSE TRAIL ELEMENTS -->
+      <img aria-hidden="true" alt="" class="trail-img" src="images/ifg_life.jpg" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/dimedika.png" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/eroses.png" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/b-one.jpg" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/wgs.jpg" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/kopi_kita.jpg" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/learnova.jpg" />
+      <img aria-hidden="true" alt="" class="trail-img" src="images/obs.jpg" />
       <div style="z-index:5" class="pointer-events-none absolute inset-0 overflow-hidden"><img alt="" aria-hidden="true"
           class="trail-img absolute left-0 top-0 h-[170px] w-[245px] object-cover opacity-0 will-change-transform" /><img
           alt="" aria-hidden="true"
@@ -6455,9 +6822,9 @@
 
       </div>
     </div>
-    <section id="about" class="flex min-h-[100svh] items-center overflow-hidden bg-black px-6 py-24 md:px-10">
+    <section id="about" class="relative flex min-h-[100svh] items-center bg-black px-6 py-20 md:px-10 md:py-28">
       <div
-        class="mx-auto flex w-full max-w-[1274px] flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+        class="mx-auto flex w-full max-w-[1274px] flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
         <div class="about-intro flex shrink-0 flex-col items-start lg:w-[240px] lg:pt-1">
           <h2 class="font-blinker text-[clamp(40px,8vw,80px)] leading-[0.9] tracking-[-0.03em] text-white">Intro</h2>
           <nav id="about-audience-nav" class="mt-8 flex flex-col items-start gap-0.5">
@@ -6482,100 +6849,99 @@
           </nav>
         </div>
         <div class="about-card w-full lg:max-w-[790px] lg:flex-1">
-          <div class="notepad relative h-[600px] overflow-hidden p-8 md:h-[840px] md:p-11 lg:h-[700px]">
+          <div class="notepad relative min-h-[360px] sm:min-h-[440px] p-6 sm:p-8 md:p-11 flex flex-col justify-center">
             <p
-              class="font-sulphur text-[30px] font-normal leading-[1.28] tracking-[-0.01em] md:text-[56px] text-white/35">
+              class="font-sulphur text-[26px] sm:text-[34px] md:text-[46px] font-normal leading-[1.3] tracking-[-0.01em] text-white/35">
               I&#x27;m Azim, a Bandung-based UI/UX developer and product engineer who blends intuitive design, modern
               frontend technology, and high-performance code into experiences people genuinely enjoy.</p>
             <p
-              class="font-sulphur text-[30px] font-normal leading-[1.28] tracking-[-0.01em] md:text-[56px] notepad-spotlight">
+              class="font-sulphur text-[26px] sm:text-[34px] md:text-[46px] font-normal leading-[1.3] tracking-[-0.01em] notepad-spotlight">
               I&#x27;m Azim, a Bandung-based UI/UX developer and product engineer who blends intuitive design, modern
               frontend technology, and high-performance code into experiences people genuinely enjoy.</p>
           </div>
         </div>
       </div>
     </section>
-    <section id="work" class="flex min-h-screen flex-col justify-center bg-black px-6 py-24 md:px-10 md:py-32">
+    <section id="work" class="flex min-h-screen flex-col justify-center bg-black px-4 sm:px-6 md:px-10 py-16 sm:py-24 md:py-32">
       <div class="mx-auto w-full max-w-[1274px]">
         <div>
           <p data-reveal="true"
-            class="font-gilroy mb-6 flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-white/50"><span
+            class="font-gilroy mb-3 sm:mb-4 md:mb-6 flex items-center gap-3 text-xs sm:text-sm uppercase tracking-[0.25em] text-white/50"><span
               class="dot-loop h-2 w-2 rounded-full" style="background:var(--accent-green)"></span>Since 2022</p>
           <h2 data-reveal="true"
-            class="font-blinker text-[clamp(40px,8vw,80px)] leading-[0.9] tracking-[-0.03em] text-white">Portfolio
+            class="font-blinker text-[clamp(36px,6.5vw,76px)] leading-[0.95] tracking-[-0.03em] text-white">Portfolio
           </h2>
           <p data-reveal="true"
-            class="font-sulphur mt-6 max-w-[760px] text-[clamp(18px,2.2vw,26px)] leading-snug tracking-tight text-white/70">
+            class="font-sulphur mt-3 sm:mt-5 max-w-[760px] text-[clamp(16px,2vw,24px)] leading-snug tracking-tight text-white/70">
             A curated collection of web applications, enterprise platforms, and interactive UI systems engineered.</p>
         </div>
-        <div class="mt-20 flex items-center justify-center gap-4 md:gap-6"><button type="button"
+        <div class="fw-carousel-wrapper mt-8 sm:mt-12 md:mt-16 flex items-center justify-center gap-3 md:gap-6"><button type="button"
             aria-label="Previous project"
-            class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/15 text-white transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"><svg
-              viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"
+            class="fw-nav-btn fw-prev-btn"><svg
+              viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
               aria-hidden="true">
-              <path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg></button>
-          <div data-cursor="view" style="height:80vh;aspect-ratio:3 / 2;max-width:100%"
-            class="relative block shrink overflow-hidden rounded-[10px] bg-neutral-900">
+          <div data-cursor="view" id="fw-main-card"
+            class="fw-card">
 
             <!-- Project 1 Image -->
             <!-- ⬇️ EDIT GAMBAR PROJECT 1 DI SINI: Ganti URL src di bawah dengan file gambar kamu (misal: images/project1.png) ⬇️ -->
             <div class="fw-img-slide absolute inset-0 transition-opacity duration-500 ease-out" style="opacity:1">
               <div class="h-full w-full"><img src="images/ifg_life.jpg" alt="IFG Life Insurance Mobile App"
-                  class="h-full w-full object-cover" /></div>
+                  class="h-full w-full object-cover object-top sm:object-center" /></div>
             </div>
 
             <!-- Project 2 Image -->
             <!-- ⬇️ EDIT GAMBAR PROJECT 2 DI SINI: Ganti URL src di bawah dengan file gambar kamu (misal: images/project2.png) ⬇️ -->
             <div class="fw-img-slide absolute inset-0 transition-opacity duration-500 ease-out" style="opacity:0">
               <div class="h-full w-full"><img src="images/dimedika.png" alt="Dimedika: EHR for Independent Clinics"
-                  class="h-full w-full object-cover" /></div>
+                  class="h-full w-full object-cover object-top sm:object-center" /></div>
             </div>
 
             <!-- Project 3 Image -->
             <!-- ⬇️ EDIT GAMBAR PROJECT 3 DI SINI: Ganti URL src di bawah dengan file gambar kamu (misal: images/project3.png) ⬇️ -->
             <div class="fw-img-slide absolute inset-0 transition-opacity duration-500 ease-out" style="opacity:0">
               <div class="h-full w-full"><img src="images/eroses.png"
-                  alt="eROSES V2.0: Malaysian Society Registry System" class="h-full w-full object-cover" /></div>
+                  alt="eROSES V2.0: Malaysian Society Registry System" class="h-full w-full object-cover object-top sm:object-center" /></div>
             </div>
 
-            <!-- Project 4 Image -->
-            <!-- ⬇️ EDIT GAMBAR PROJECT 4 DI SINI: Ganti URL src di bawah dengan file gambar kamu (misal: images/project4.png) ⬇️ -->
-            <div class="fw-img-slide absolute inset-0 transition-opacity duration-500 ease-out" style="opacity:0">
-              <div class="h-full w-full"><img src="https://www.jingjinghan.com/images/sw-salona.png"
-                  alt="Kopi Kita: AI CRM for Small Coffee Shops" class="h-full w-full object-cover" /></div>
+            <!-- Explicit bottom gradient overlay to 100% guarantee black background behind text on light images -->
+            <div class="fw-bottom-gradient" style="position:absolute; inset-x:0; bottom:0; left:0; right:0; height:80%; background:linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.4) 75%, transparent 100%); pointer-events:none; z-index:15;"></div>
+
+            <!-- Top vignette for badge contrast -->
+            <div class="fw-top-scrim" style="position:absolute; inset-x:0; top:0; left:0; right:0; height:90px; background:linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 65%, transparent 100%); pointer-events:none; z-index:15;"></div>
+
+            <!-- Top Header Badges -->
+            <div class="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between p-3.5 sm:p-5 md:p-6">
+              <span id="fw-counter"
+                class="fw-badge rounded-full px-3 py-1 font-gilroy text-[11px] sm:text-xs tracking-[0.25em] text-white/95">01 / 03</span>
+              <span class="fw-badge flex items-center gap-1.5 rounded-full px-2.5 py-1 font-gilroy text-[11px] sm:text-xs tracking-wider text-white/85">
+                Featured Work
+              </span>
             </div>
 
-            <div
-              class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-2/3 bg-gradient-to-t from-black/85 via-black/35 to-transparent">
-            </div><span id="fw-counter"
-              class="pointer-events-none absolute left-5 top-5 z-20 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 font-gilroy text-xs tracking-[0.25em] text-white backdrop-blur-md">01
-              / 04</span>
-            <div class="sw-info pointer-events-none absolute inset-x-0 bottom-0 z-20 p-7 md:p-10">
-              <h3 id="fw-title" class="font-blinker text-[clamp(26px,3.2vw,44px)] font-medium leading-tight text-white">
+            <!-- Bottom Information -->
+            <div class="sw-info pointer-events-none absolute inset-x-0 bottom-0 z-20 p-4 sm:p-7 md:p-10">
+              <h3 id="fw-title" class="font-blinker text-[clamp(20px,3.2vw,40px)] font-medium leading-tight text-white tracking-tight" style="color:#ffffff !important; text-shadow:0 2px 10px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.95) !important;">
                 IFG Life Insurance Mobile App</h3>
               <p id="fw-desc"
-                class="font-gilroy mt-2 max-w-[560px] text-[15px] leading-relaxed text-white/75 md:text-[16px]">
+                class="font-gilroy mt-1.5 sm:mt-2.5 max-w-[620px] text-[13px] sm:text-[15px] md:text-[16px] leading-relaxed line-clamp-3 sm:line-clamp-none" style="color:rgba(255,255,255,0.92) !important; text-shadow:0 1px 8px rgba(0,0,0,0.95) !important;">
                 Led frontend development for Indonesia's state-owned insurance holding platform, serving policyholders
                 nationwide with scalable React architecture.</p>
-            </div><a href="#work" aria-label="Featured Work Project" class="absolute inset-0 z-30"></a>
+            </div><a href="#work" aria-label="Featured Work Project" class="absolute inset-0 z-20"></a>
           </div><button type="button" aria-label="Next project"
-            class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/15 text-white transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"><svg
-              viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"
+            class="fw-nav-btn fw-next-btn"><svg
+              viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
               aria-hidden="true">
               <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg></button>
         </div>
-        <div id="fw-tab-list" class="mt-4 flex flex-wrap justify-center gap-x-7 gap-y-2 border-t border-white/10 pt-5">
+        <div id="fw-tab-list" class="mt-4 sm:mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 border-t border-white/10 pt-4 sm:pt-5">
           <button type="button" data-fw-index="0"
-            class="fw-tab-btn font-gilroy text-[15px] transition-colors duration-300 md:text-base"
-            style="color:#ffffff">IFG Life</button><button type="button" data-fw-index="1"
-            class="fw-tab-btn font-gilroy text-[15px] transition-colors duration-300 md:text-base"
-            style="color:rgba(255,255,255,0.4)">Dimedika EHR</button><button type="button" data-fw-index="2"
-            class="fw-tab-btn font-gilroy text-[15px] transition-colors duration-300 md:text-base"
-            style="color:rgba(255,255,255,0.4)">eROSES V2.0</button><button type="button" data-fw-index="3"
-            class="fw-tab-btn font-gilroy text-[15px] transition-colors duration-300 md:text-base"
-            style="color:rgba(255,255,255,0.4)">Kopi Kita AI</button>
+            class="fw-tab-btn is-active font-gilroy">IFG Life</button><button type="button" data-fw-index="1"
+            class="fw-tab-btn font-gilroy">Dimedika EHR</button><button type="button" data-fw-index="2"
+            class="fw-tab-btn font-gilroy">eROSES V2.0</button>
         </div>
       </div>
     </section>
@@ -6712,74 +7078,234 @@
             Engineering high-performance web applications, scalable design systems, and responsive frontends with modern
             web technologies.</p>
         </div>
-        <div class="wd-list border-b border-white/10"><a href="#web" data-cursor="view" data-reveal="true"
-            class="group flex items-center justify-between gap-6 border-t border-white/10 py-5 md:py-7">
-            <div class="flex items-baseline gap-5 md:gap-8">
-              <h3
-                class="wd-title font-blinker text-[clamp(30px,5.5vw,84px)] leading-[0.95] tracking-[-0.02em] transition-all duration-300 group-hover:translate-x-3"
-                style="color:rgba(255,255,255,0.16);-webkit-text-stroke:1px rgba(255,255,255,0.55)">React &amp; Next.js
-              </h3>
-            </div><span
-              class="font-gilroy shrink-0 text-lg text-white/30 transition-colors duration-300 group-hover:text-white/80">↗</span>
-          </a><a href="#web" data-cursor="view" data-reveal="true"
-            class="group flex items-center justify-between gap-6 border-t border-white/10 py-5 md:py-7">
-            <div class="flex items-baseline gap-5 md:gap-8">
-              <h3
-                class="wd-title font-blinker text-[clamp(30px,5.5vw,84px)] leading-[0.95] tracking-[-0.02em] transition-all duration-300 group-hover:translate-x-3"
-                style="color:rgba(255,255,255,0.16);-webkit-text-stroke:1px rgba(255,255,255,0.55)">Design Systems &amp;
-                Tailwind</h3>
-            </div><span
-              class="font-gilroy shrink-0 text-lg text-white/30 transition-colors duration-300 group-hover:text-white/80">↗</span>
-          </a><a href="#web" data-cursor="view" data-reveal="true"
-            class="group flex items-center justify-between gap-6 border-t border-white/10 py-5 md:py-7">
-            <div class="flex items-baseline gap-5 md:gap-8">
-              <h3
-                class="wd-title font-blinker text-[clamp(30px,5.5vw,84px)] leading-[0.95] tracking-[-0.02em] transition-all duration-300 group-hover:translate-x-3"
-                style="color:rgba(255,255,255,0.16);-webkit-text-stroke:1px rgba(255,255,255,0.55)">TypeScript &amp;
-                Architecture</h3>
-            </div><span
-              class="font-gilroy shrink-0 text-lg text-white/30 transition-colors duration-300 group-hover:text-white/80">↗</span>
-          </a><a href="#web" data-cursor="view" data-reveal="true"
-            class="group flex items-center justify-between gap-6 border-t border-white/10 py-5 md:py-7">
-            <div class="flex items-baseline gap-5 md:gap-8">
-              <h3
-                class="wd-title font-blinker text-[clamp(30px,5.5vw,84px)] leading-[0.95] tracking-[-0.02em] transition-all duration-300 group-hover:translate-x-3"
-                style="color:rgba(255,255,255,0.16);-webkit-text-stroke:1px rgba(255,255,255,0.55)">GSAP Motion &amp;
-                Performance</h3>
-            </div><span
-              class="font-gilroy shrink-0 text-lg text-white/30 transition-colors duration-300 group-hover:text-white/80">↗</span>
-          </a></div>
-      </div>
-      <div
-        class="pointer-events-none absolute left-0 top-0 z-20 h-[300px] w-[420px] overflow-hidden rounded-[14px] shadow-2xl transition-opacity duration-300"
-        style="opacity:0">
-        <div class="absolute inset-0 transition-opacity duration-300" style="opacity:0"><img
-            alt="Sourcing crypto wallet landing page on laptop" loading="lazy" decoding="async" data-nimg="fill"
-            class="object-cover"
-            style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-            sizes="420px"
-            srcSet="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=32&amp;q=75 32w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=48&amp;q=75 48w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=64&amp;q=75 64w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=96&amp;q=75 96w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=128&amp;q=75 128w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=256&amp;q=75 256w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=384&amp;q=75 384w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=640&amp;q=75 640w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=750&amp;q=75 750w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=828&amp;q=75 828w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=1080&amp;q=75 1080w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=1200&amp;q=75 1200w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=1920&amp;q=75 1920w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=2048&amp;q=75 2048w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=3840&amp;q=75 3840w"
-            src="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-xNgnG.png&amp;w=3840&amp;q=75" /></div>
-        <div class="absolute inset-0 transition-opacity duration-300" style="opacity:0"><img
-            alt="IIDRR culture magazine website" loading="lazy" decoding="async" data-nimg="fill" class="object-cover"
-            style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-            sizes="420px"
-            srcSet="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=32&amp;q=75 32w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=48&amp;q=75 48w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=64&amp;q=75 64w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=96&amp;q=75 96w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=128&amp;q=75 128w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=256&amp;q=75 256w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=384&amp;q=75 384w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=640&amp;q=75 640w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=750&amp;q=75 750w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=828&amp;q=75 828w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=1080&amp;q=75 1080w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=1200&amp;q=75 1200w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=1920&amp;q=75 1920w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=2048&amp;q=75 2048w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=3840&amp;q=75 3840w"
-            src="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fcs%2FIddrr%2F1.png&amp;w=3840&amp;q=75" />
+        <!-- Tech Stack & Capabilities Accordion -->
+        <div class="tech-accordion" role="region" aria-label="Capabilities Accordion">
+          
+          <!-- Item 01 (Open by default) -->
+          <div class="tech-accordion-item is-open" data-reveal="true">
+            <button type="button" class="tech-accordion-trigger group" aria-expanded="true" aria-controls="tech-acc-01" id="tech-trigger-01">
+              <div class="flex items-center gap-4 sm:gap-8 md:gap-12 min-w-0 pr-4">
+                <span class="tech-accordion-num font-gilroy text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/40 transition-colors duration-300">01</span>
+                <h3 class="tech-accordion-title font-blinker text-[clamp(24px,4vw,52px)] font-medium leading-[1.05] tracking-tight">
+                  React &amp; Next.js
+                </h3>
+              </div>
+              <div class="flex items-center gap-3 sm:gap-6 shrink-0">
+                <span class="tech-category-pill hidden sm:inline-flex font-gilroy text-xs font-semibold uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full border border-white/15 text-white/50 group-hover:text-white/80 transition-colors">
+                  Frontend
+                </span>
+                <span class="tech-accordion-icon" aria-hidden="true">
+                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="8" y1="2" x2="8" y2="14"></line>
+                    <line x1="2" y1="8" x2="14" y2="8"></line>
+                  </svg>
+                </span>
+              </div>
+            </button>
+            <div id="tech-acc-01" class="tech-accordion-panel" role="region" aria-labelledby="tech-trigger-01">
+              <div class="tech-accordion-panel-inner pb-8 sm:pb-10 pt-2 pl-0 sm:pl-[clamp(2.5rem,6vw,5.5rem)]">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+                  <div class="lg:col-span-7">
+                    <p class="font-gilroy text-[15px] sm:text-[17px] leading-relaxed text-white/75">
+                      Architecting scalable, production-grade web applications using Next.js App Router, React 19, Server Components, and optimized rendering strategies (SSR, SSG, ISR). Deep experience managing complex enterprise workflows with clean client-side state models.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-sm text-white/60 font-gilroy">
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Next.js 15 App Router, Server Actions &amp; Streaming SSR
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Client &amp; Server State Architecture with Zustand &amp; TanStack Query
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Enterprise Workflow Optimization &amp; Resilient Error Boundaries
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="lg:col-span-5 flex flex-wrap gap-2 pt-2 lg:pt-0">
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Next.js 15</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">React 19</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Zustand</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">TanStack Query</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Server Components</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">SSR / SSG</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 02 -->
+          <div class="tech-accordion-item" data-reveal="true">
+            <button type="button" class="tech-accordion-trigger group" aria-expanded="false" aria-controls="tech-acc-02" id="tech-trigger-02">
+              <div class="flex items-center gap-4 sm:gap-8 md:gap-12 min-w-0 pr-4">
+                <span class="tech-accordion-num font-gilroy text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/40 transition-colors duration-300">02</span>
+                <h3 class="tech-accordion-title font-blinker text-[clamp(24px,4vw,52px)] font-medium leading-[1.05] tracking-tight">
+                  Design Systems &amp; Tailwind
+                </h3>
+              </div>
+              <div class="flex items-center gap-3 sm:gap-6 shrink-0">
+                <span class="tech-category-pill hidden sm:inline-flex font-gilroy text-xs font-semibold uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full border border-white/15 text-white/50 group-hover:text-white/80 transition-colors">
+                  Design Systems
+                </span>
+                <span class="tech-accordion-icon" aria-hidden="true">
+                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="8" y1="2" x2="8" y2="14"></line>
+                    <line x1="2" y1="8" x2="14" y2="8"></line>
+                  </svg>
+                </span>
+              </div>
+            </button>
+            <div id="tech-acc-02" class="tech-accordion-panel" role="region" aria-labelledby="tech-trigger-02">
+              <div class="tech-accordion-panel-inner pb-8 sm:pb-10 pt-2 pl-0 sm:pl-[clamp(2.5rem,6vw,5.5rem)]">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+                  <div class="lg:col-span-7">
+                    <p class="font-gilroy text-[15px] sm:text-[17px] leading-relaxed text-white/75">
+                      Bridging the gap between Figma designs and production code. Developing comprehensive design systems with design token pipelines, atomic component libraries, accessible Radix / shadcn primitives, and responsive Tailwind styling.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-sm text-white/60 font-gilroy">
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Figma Tokens to CSS variables &amp; Tailwind config synchronization
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        WCAG 2.1 AA compliant keyboard navigation &amp; screen reader support
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Accessible headless primitives (Radix UI, Headless UI, shadcn)
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="lg:col-span-5 flex flex-wrap gap-2 pt-2 lg:pt-0">
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Tailwind CSS</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Radix UI</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">shadcn/ui</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Figma Tokens</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Storybook</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">WCAG a11y</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 03 -->
+          <div class="tech-accordion-item" data-reveal="true">
+            <button type="button" class="tech-accordion-trigger group" aria-expanded="false" aria-controls="tech-acc-03" id="tech-trigger-03">
+              <div class="flex items-center gap-4 sm:gap-8 md:gap-12 min-w-0 pr-4">
+                <span class="tech-accordion-num font-gilroy text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/40 transition-colors duration-300">03</span>
+                <h3 class="tech-accordion-title font-blinker text-[clamp(24px,4vw,52px)] font-medium leading-[1.05] tracking-tight">
+                  TypeScript &amp; Architecture
+                </h3>
+              </div>
+              <div class="flex items-center gap-3 sm:gap-6 shrink-0">
+                <span class="tech-category-pill hidden sm:inline-flex font-gilroy text-xs font-semibold uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full border border-white/15 text-white/50 group-hover:text-white/80 transition-colors">
+                  Architecture
+                </span>
+                <span class="tech-accordion-icon" aria-hidden="true">
+                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="8" y1="2" x2="8" y2="14"></line>
+                    <line x1="2" y1="8" x2="14" y2="8"></line>
+                  </svg>
+                </span>
+              </div>
+            </button>
+            <div id="tech-acc-03" class="tech-accordion-panel" role="region" aria-labelledby="tech-trigger-03">
+              <div class="tech-accordion-panel-inner pb-8 sm:pb-10 pt-2 pl-0 sm:pl-[clamp(2.5rem,6vw,5.5rem)]">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+                  <div class="lg:col-span-7">
+                    <p class="font-gilroy text-[15px] sm:text-[17px] leading-relaxed text-white/75">
+                      Enforcing strict end-to-end type safety, domain-driven modularization, clean architecture, and scalable microfrontend architectures for large engineering teams. Integrating RESTful, GraphQL, and microservice APIs with type validation and caching layers.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-sm text-white/60 font-gilroy">
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Strict TypeScript type generation &amp; runtime Zod schema validation
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Microfrontends, Module Federation &amp; Independent Team Deployments
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        Clean Domain Architecture with isolated service layers
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="lg:col-span-5 flex flex-wrap gap-2 pt-2 lg:pt-0">
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">TypeScript</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Microfrontends</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">RESTful APIs</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Zod</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Clean Architecture</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Node.js</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 04 -->
+          <div class="tech-accordion-item" data-reveal="true">
+            <button type="button" class="tech-accordion-trigger group" aria-expanded="false" aria-controls="tech-acc-04" id="tech-trigger-04">
+              <div class="flex items-center gap-4 sm:gap-8 md:gap-12 min-w-0 pr-4">
+                <span class="tech-accordion-num font-gilroy text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/40 transition-colors duration-300">04</span>
+                <h3 class="tech-accordion-title font-blinker text-[clamp(24px,4vw,52px)] font-medium leading-[1.05] tracking-tight">
+                  GSAP Motion &amp; Performance
+                </h3>
+              </div>
+              <div class="flex items-center gap-3 sm:gap-6 shrink-0">
+                <span class="tech-category-pill hidden sm:inline-flex font-gilroy text-xs font-semibold uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full border border-white/15 text-white/50 group-hover:text-white/80 transition-colors">
+                  Performance
+                </span>
+                <span class="tech-accordion-icon" aria-hidden="true">
+                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="8" y1="2" x2="8" y2="14"></line>
+                    <line x1="2" y1="8" x2="14" y2="8"></line>
+                  </svg>
+                </span>
+              </div>
+            </button>
+            <div id="tech-acc-04" class="tech-accordion-panel" role="region" aria-labelledby="tech-trigger-04">
+              <div class="tech-accordion-panel-inner pb-8 sm:pb-10 pt-2 pl-0 sm:pl-[clamp(2.5rem,6vw,5.5rem)]">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+                  <div class="lg:col-span-7">
+                    <p class="font-gilroy text-[15px] sm:text-[17px] leading-relaxed text-white/75">
+                      Building immersive, responsive digital journeys with buttery 60fps animations, ScrollTrigger dynamic pin triggers, and Lenis smooth scrolling. Relentlessly optimizing bundles, reducing layout shifts (CLS), and reaching 95+ Core Web Vitals.
+                    </p>
+                    <ul class="mt-4 space-y-2 text-sm text-white/60 font-gilroy">
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        GSAP 3, ScrollTrigger &amp; timeline sequencing for web storytelling
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        95+ Google Lighthouse scores across Performance &amp; Accessibility
+                      </li>
+                      <li class="flex items-center gap-2.5">
+                        <span class="h-1.5 w-1.5 rounded-full" style="background:var(--accent-green)"></span>
+                        GPU transform composite layering to eliminate layout jank
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="lg:col-span-5 flex flex-wrap gap-2 pt-2 lg:pt-0">
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">GSAP 3</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">ScrollTrigger</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Lenis Scroll</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Lighthouse 95+</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Core Web Vitals</span>
+                    <span class="font-gilroy rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs text-white/80 transition-colors hover:border-white/30 hover:bg-white/10">Perf Profiling</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="absolute inset-0 transition-opacity duration-300" style="opacity:0"><img
-            alt="Nuro AI landing page on laptop" loading="lazy" decoding="async" data-nimg="fill" class="object-cover"
-            style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-            sizes="420px"
-            srcSet="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=32&amp;q=75 32w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=48&amp;q=75 48w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=64&amp;q=75 64w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=96&amp;q=75 96w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=128&amp;q=75 128w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=256&amp;q=75 256w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=384&amp;q=75 384w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=640&amp;q=75 640w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=750&amp;q=75 750w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=828&amp;q=75 828w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=1080&amp;q=75 1080w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=1200&amp;q=75 1200w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=1920&amp;q=75 1920w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=2048&amp;q=75 2048w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=3840&amp;q=75 3840w"
-            src="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-9qVQP.png&amp;w=3840&amp;q=75" /></div>
-        <div class="absolute inset-0 transition-opacity duration-300" style="opacity:0"><img
-            alt="BE Financial Education website on monitor" loading="lazy" decoding="async" data-nimg="fill"
-            class="object-cover"
-            style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-            sizes="420px"
-            srcSet="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=32&amp;q=75 32w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=48&amp;q=75 48w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=64&amp;q=75 64w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=96&amp;q=75 96w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=128&amp;q=75 128w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=256&amp;q=75 256w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=384&amp;q=75 384w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=640&amp;q=75 640w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=750&amp;q=75 750w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=828&amp;q=75 828w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=1080&amp;q=75 1080w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=1200&amp;q=75 1200w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=1920&amp;q=75 1920w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=2048&amp;q=75 2048w, https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=3840&amp;q=75 3840w"
-            src="https://www.jingjinghan.com/_next/image?url=%2Fimages%2Fweb-HflwM.png&amp;w=3840&amp;q=75" /></div>
       </div>
     </section>
     <section id="performance"
@@ -6917,12 +7443,12 @@
           <div>
             <p class="font-gilroy mb-5 text-xs uppercase tracking-[0.25em] text-white/40">Connect</p>
             <ul class="font-gilroy space-y-3 text-[18px] text-white/75">
-              <li><a href="https://www.linkedin.com/in/hanjingjing/" target="_blank" rel="noopener noreferrer"
+              <li><a href="https://www.linkedin.com/in/azim-bud/" target="_blank" rel="noopener noreferrer"
                   data-cursor-hover="true"
                   class="group inline-flex origin-left items-center gap-1.5 transition-transform duration-300 ease-out hover:scale-110 hover:text-white">LinkedIn<span
                     aria-hidden="true"
                     class="inline-block transition-transform duration-300 group-hover:rotate-45">↗</span></a></li>
-              <li><a href="mailto:jingjinghan46@gmail.com" data-cursor-hover="true"
+              <li><a href="mailto:budazimbud@gmail.com" data-cursor-hover="true"
                   class="group inline-flex origin-left items-center gap-1.5 transition-transform duration-300 ease-out hover:scale-110 hover:text-white">Email</a>
               </li>
               <li><a href="https://remaketool.framer.website/" target="_blank" rel="noopener noreferrer"
@@ -6958,7 +7484,7 @@
   <script>self.__next_f.push([1, "0:{\"P\":null,\"c\":[\"\",\"\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",16],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/06olnurac842u.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/0tbbsc49.sc7i.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/11k9_ht-umnrq.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-2\",{\"src\":\"/_next/static/chunks/0d3shmwh5_nmn.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"suppressHydrationWarning\":true,\"className\":\"blinker_e8661953-module__-I7h9q__variable sulphur_point_762e9a8f-module__ULSyjW__variable gilroy_7fa0b700-module__tW3j8W__variable antialiased\",\"children\":[\"$\",\"body\",null,{\"className\":\"bg-background text-foreground\",\"children\":[[\"$\",\"script\",null,{\"async\":true,\"src\":\"https://www.googletagmanager.com/gtag/js?id=G-9B3714E1ZG\"}],[\"$\",\"script\",null,{\"id\":\"ga-gtag-init\",\"dangerouslySetInnerHTML\":{\"__html\":\"window.dataLayer = window.dataLayer || [];\\nfunction gtag(){dataLayer.push(arguments);}\\ngtag('js', new Date());\\ngtag('config', 'G-9B3714E1ZG');\"}}],[\"$\",\"script\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"try{sessionStorage.getItem('intro-played')==='1'\u0026\u0026document.documentElement.classList.add('intro-done')}catch(e){}\"}}],[\"$\",\"$L2\",null,{}],[\"$\",\"$L3\",null,{}],[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[[\"$\",\"$L6\",null,{}],[[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/0i1..nj4jaiqb.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/0rwr5.4da91zi.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-2\",{\"src\":\"/_next/static/chunks/133rq7uo7d2_0.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-3\",{\"src\":\"/_next/static/chunks/0r4lr06w959-m.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-4\",{\"src\":\"/_next/static/chunks/11cz13r8bk.28.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,null]},null,false,null],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$La\",null,{\"children\":\"$Lb\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lc\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Ld\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$e\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/06olnurac842u.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]]],\"S\":true,\"h\":null,\"s\":\"$undefined\",\"l\":\"$undefined\",\"p\":\"$undefined\",\"d\":\"$undefined\",\"b\":\"V8Iaqo-NKwKXTceP5YWz4\"}\n"])</script>
   <script>self.__next_f.push([1, "b:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script>
   <script>self.__next_f.push([1, "f:I[27201,[\"/_next/static/chunks/0tbbsc49.sc7i.js\",\"/_next/static/chunks/11k9_ht-umnrq.js\",\"/_next/static/chunks/0d3shmwh5_nmn.js\"],\"IconMark\"]\n9:null\n"])</script>
-  <script>self.__next_f.push([1, "d:[[\"$\",\"title\",\"0\",{\"children\":\"Jingjing Han — Product Designer \u0026 Creative Technologist\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"The creative portfolio of Jingjing Han — product design, web design, and vibe-coded experiments in the Playground.\"}],[\"$\",\"link\",\"2\",{\"rel\":\"canonical\",\"href\":\"https://www.jingjinghan.com\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:title\",\"content\":\"Jingjing's Portfolio\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:description\",\"content\":\"Product designer dedicated to creating cohesive and meaningful user experiences that connect people, spaces, and services.\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:url\",\"content\":\"https://www.jingjinghan.com\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:site_name\",\"content\":\"Jingjing Han\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:image\",\"content\":\"https://www.jingjinghan.com/seo/og-image.png\"}],[\"$\",\"meta\",\"8\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"$\",\"meta\",\"9\",{\"name\":\"twitter:card\",\"content\":\"summary_large_image\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:title\",\"content\":\"Jingjing's Portfolio\"}],[\"$\",\"meta\",\"11\",{\"name\":\"twitter:description\",\"content\":\"Product designer dedicated to creating cohesive and meaningful user experiences that connect people, spaces, and services.\"}],[\"$\",\"meta\",\"12\",{\"name\":\"twitter:image\",\"content\":\"https://www.jingjinghan.com/seo/og-image.png\"}],[\"$\",\"link\",\"13\",{\"rel\":\"icon\",\"href\":\"/favicon.ico?favicon.0jswczi4io716.ico\",\"sizes\":\"256x256\",\"type\":\"image/x-icon\"}],[\"$\",\"link\",\"14\",{\"rel\":\"icon\",\"href\":\"/seo/favicon.png\"}],[\"$\",\"link\",\"15\",{\"rel\":\"apple-touch-icon\",\"href\":\"/seo/favicon.png\"}],[\"$\",\"$Lf\",\"16\",{}]]\n"])</script>
+  <script>self.__next_f.push([1, "d:[[\"$\",\"title\",\"0\",{\"children\":\"Azim — UI/UX Developer & Product Engineer\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"The portfolio of Azim, Senior UI/UX Developer and Product Engineer based in Bandung, Indonesia. 5+ years experience building web apps, design systems, and modern interfaces.\"}],[\"$\",\"link\",\"2\",{\"rel\":\"canonical\",\"href\":\"https://tech-azim.github.io\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:title\",\"content\":\"Azim's Portfolio\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:description\",\"content\":\"UI/UX developer & product engineer dedicated to building seamless, high-performance web applications and intuitive design systems.\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:url\",\"content\":\"https://tech-azim.github.io\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:site_name\",\"content\":\"Azim\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:image\",\"content\":\"https://tech-azim.github.io/seo/og-image.png\"}],[\"$\",\"meta\",\"8\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"$\",\"meta\",\"9\",{\"name\":\"twitter:card\",\"content\":\"summary_large_image\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:title\",\"content\":\"Azim's Portfolio\"}],[\"$\",\"meta\",\"11\",{\"name\":\"twitter:description\",\"content\":\"UI/UX developer & product engineer dedicated to building seamless, high-performance web applications and intuitive design systems.\"}],[\"$\",\"meta\",\"12\",{\"name\":\"twitter:image\",\"content\":\"https://tech-azim.github.io/seo/og-image.png\"}],[\"$\",\"link\",\"13\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\",\"sizes\":\"256x256\",\"type\":\"image/x-icon\"}],[\"$\",\"link\",\"14\",{\"rel\":\"icon\",\"href\":\"/seo/favicon.png\"}],[\"$\",\"link\",\"15\",{\"rel\":\"apple-touch-icon\",\"href\":\"/seo/favicon.png\"}],[\"$\",\"$Lf\",\"16\",{}]]\n"])</script>
 
   <script>
     window.addEventListener('error', function (e) { e.stopImmediatePropagation(); return true; }, true);
@@ -6983,8 +7509,10 @@
         cursor.style.setProperty('visibility', 'hidden', 'important');
       }
 
+      const isTouchOrSmall = () => window.matchMedia('(max-width: 1024px), (hover: none) and (pointer: coarse)').matches;
+
       function updateCursor(e) {
-        if (!cursor) return;
+        if (!cursor || isTouchOrSmall()) return;
         cursor.style.setProperty('left', e.clientX + 'px', 'important');
         cursor.style.setProperty('top', e.clientY + 'px', 'important');
         cursor.style.setProperty('opacity', '1', 'important');
@@ -7001,12 +7529,14 @@
       const heroSec = document.querySelector('section.relative');
       const trailImgs = document.querySelectorAll('.trail-img');
       const trailSources = [
-        "https://www.jingjinghan.com/images/cs/first-mover/00-1gxmw8jD2K7expU4lIEX7iJjY04.png",
-        "https://www.jingjinghan.com/images/sw-fosterhealth.png",
-        "https://www.jingjinghan.com/images/sw-crypto.png",
-        "https://www.jingjinghan.com/images/sw-salona.png",
-        "https://www.jingjinghan.com/images/cs/Nook/Nook_Cover.png",
-        "https://www.jingjinghan.com/images/web-6r1cr.png"
+        "images/ifg_life.jpg",
+        "images/dimedika.png",
+        "images/eroses.png",
+        "images/b-one.jpg",
+        "images/wgs.jpg",
+        "images/kopi_kita.jpg",
+        "images/learnova.jpg",
+        "images/obs.jpg"
       ];
 
       if (heroSec && trailImgs.length > 0) {
@@ -7070,26 +7600,33 @@
       const spotlightp = document.querySelector('.notepad-spotlight');
 
       if (notepad && spotlightp) {
+        let spotlightTicking = false;
         notepad.addEventListener('mousemove', (e) => {
-          const rect = notepad.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
+          if (!spotlightTicking) {
+            window.requestAnimationFrame(() => {
+              const rect = notepad.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
 
-          spotlightp.style.setProperty('--mouse-x', `${x}px`);
-          spotlightp.style.setProperty('--mouse-y', `${y}px`);
-          spotlightp.style.opacity = '1';
-        });
+              spotlightp.style.setProperty('--mouse-x', `${x}px`);
+              spotlightp.style.setProperty('--mouse-y', `${y}px`);
+              spotlightp.style.opacity = '1';
+              spotlightTicking = false;
+            });
+            spotlightTicking = true;
+          }
+        }, { passive: true });
 
         notepad.addEventListener('mouseleave', () => {
-          // Fade out bright text when mouse leaves the notepad box
           spotlightp.style.opacity = '0';
         });
       }
 
       // Project card hover -> 140px "View Project" dark circle
-      const projectEls = document.querySelectorAll('#work [data-cursor="view"], #playground [data-cursor="view"], .perf-card, .wd-list a');
+      const projectEls = document.querySelectorAll('#work [data-cursor="view"], #playground [data-cursor="view"], .perf-card');
       projectEls.forEach(function (el) {
         el.addEventListener('mouseenter', function () {
+          if (isTouchOrSmall()) return;
           cursor.classList.remove('hover-link');
           cursor.classList.add('hover-project');
           if (cursorText) cursorText.innerHTML = 'View<br/>Project';
@@ -7104,6 +7641,7 @@
       const linkEls = document.querySelectorAll('a, button, [data-cursor-hover="true"], header nav a, #about button');
       linkEls.forEach(function (el) {
         el.addEventListener('mouseenter', function () {
+          if (isTouchOrSmall()) return;
           if (!cursor.classList.contains('hover-project')) {
             cursor.classList.add('hover-link');
           }
@@ -7228,29 +7766,65 @@
         );
       }
 
-      // NAVBAR SCROLL DIRECTION & COMPACT STATE ENGINE
+      // NAVBAR SCROLL & MOBILE DRAWER ENGINE
       const header = document.querySelector('header');
-      let lastScrollY = window.scrollY;
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileClose = document.getElementById('mobile-close-btn');
+      const mobileDrawer = document.getElementById('mobile-drawer');
+      const mobileLinks = document.querySelectorAll('.mobile-drawer-link');
 
+      function toggleMobileDrawer(open) {
+        if (!mobileDrawer) return;
+        const isOpen = open !== undefined ? open : !mobileDrawer.classList.contains('is-open');
+        if (isOpen) {
+          mobileDrawer.classList.add('is-open');
+          mobileDrawer.setAttribute('aria-hidden', 'false');
+          if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden';
+        } else {
+          mobileDrawer.classList.remove('is-open');
+          mobileDrawer.setAttribute('aria-hidden', 'true');
+          if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleMobileDrawer();
+        });
+      }
+      if (mobileClose) {
+        mobileClose.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleMobileDrawer(false);
+        });
+      }
+      mobileLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          toggleMobileDrawer(false);
+        });
+      });
+
+      let lastScrollY = window.scrollY;
       if (header) {
         window.addEventListener('scroll', () => {
           const currentScrollY = window.scrollY;
 
-          // 1. Jika posisi ada di paling atas halaman (Hero Section)
-          if (currentScrollY <= 50) {
+          // 1. Top of page
+          if (currentScrollY <= 40) {
             header.classList.remove('nav-hidden');
-            header.classList.remove('scrolled'); // Kembali ke tampilan penuh awal
-          }
-          // 2. Jika sudah di-scroll ke bawah Hero Section
-          else {
-            header.classList.add('scrolled'); // Aktifkan versi pendek (3 titik)
+            header.classList.remove('scrolled');
+          } else {
+            header.classList.add('scrolled');
 
-            // Scrolling DOWN -> Sembunyikan Navbar
-            if (currentScrollY > lastScrollY && currentScrollY > 120) {
-              header.classList.add('nav-hidden');
-            }
-            // Scrolling UP -> Tampilkan Navbar (Versi Pendek)
-            else if (currentScrollY < lastScrollY) {
+            // Scroll down -> hide; Scroll up -> show
+            if (currentScrollY > lastScrollY && currentScrollY > 140) {
+              if (!mobileDrawer || !mobileDrawer.classList.contains('is-open')) {
+                header.classList.add('nav-hidden');
+              }
+            } else if (currentScrollY < lastScrollY) {
               header.classList.remove('nav-hidden');
             }
           }
@@ -7371,48 +7945,52 @@
         });
       }
 
-      // 7. WEB DESIGN HOVER FLOATING PREVIEW (#web)
-      const webSection = document.getElementById('web');
-      if (webSection) {
-        const items = webSection.querySelectorAll('.wd-list a');
-        const floatingCard = webSection.querySelector('.pointer-events-none.absolute.left-0.top-0.z-20');
-        if (floatingCard) {
-          floatingCard.classList.add('wd-preview-card');
-          const previews = floatingCard.children;
-          items.forEach((item, index) => {
-            item.addEventListener('mouseenter', () => {
-              floatingCard.classList.add('show');
-              Array.from(previews).forEach((p, i) => { p.style.opacity = (i === index ? "1" : "0"); });
+      // 7. TECH STACK & CAPABILITIES ACCORDION (#web)
+      const techAccordion = document.querySelector('.tech-accordion');
+      if (techAccordion) {
+        const accordionItems = techAccordion.querySelectorAll('.tech-accordion-item');
+        accordionItems.forEach((item) => {
+          const trigger = item.querySelector('.tech-accordion-trigger');
+          if (!trigger) return;
+
+          trigger.addEventListener('click', () => {
+            const isOpen = item.classList.contains('is-open');
+
+            // Close all items
+            accordionItems.forEach((other) => {
+              other.classList.remove('is-open');
+              const otherTrigger = other.querySelector('.tech-accordion-trigger');
+              if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');
             });
-            item.addEventListener('mousemove', (e) => {
-              floatingCard.style.left = (e.clientX + 20) + 'px';
-              floatingCard.style.top = (e.clientY - 120) + 'px';
-            });
-            item.addEventListener('mouseleave', () => {
-              floatingCard.classList.remove('show');
-            });
+
+            // Toggle active item
+            if (!isOpen) {
+              item.classList.add('is-open');
+              trigger.setAttribute('aria-expanded', 'true');
+            }
           });
-        }
+        });
       }
 
       // 8. INTRO / NOTEPAD SCROLL-DRIVEN REVEAL (#about)
       const aboutSection = document.getElementById('about');
       if (aboutSection && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        const aboutText = aboutSection.querySelector('h2, .font-blinker');
-        const notepadCard = aboutSection.querySelector('.notepad') || aboutSection.querySelector('.bg-\[\#101014\]');
+        const aboutIntro = aboutSection.querySelector('.about-intro');
+        const notepadCard = aboutSection.querySelector('.notepad');
 
-        if (aboutText) {
-          gsap.fromTo(aboutText.parentElement,
-            { y: 50, opacity: 0 },
+        if (aboutIntro) {
+          gsap.fromTo(aboutIntro,
+            { y: 35, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.9,
+              duration: 0.75,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: aboutSection,
-                start: "top 82%",
-                toggleActions: "play none none none"
+                start: "top 85%",
+                toggleActions: "play none none none",
+                once: true
               }
             }
           );
@@ -7420,16 +7998,18 @@
 
         if (notepadCard) {
           gsap.fromTo(notepadCard,
-            { x: 80, opacity: 0 },
+            { y: 35, opacity: 0 },
             {
-              x: 0,
+              y: 0,
               opacity: 1,
-              duration: 1.0,
+              duration: 0.75,
+              delay: 0.1,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: aboutSection,
-                start: "top 80%",
-                toggleActions: "play none none none"
+                start: "top 85%",
+                toggleActions: "play none none none",
+                once: true
               }
             }
           );
@@ -7505,27 +8085,23 @@
         const counterEl = document.getElementById('fw-counter');
         const titleEl = document.getElementById('fw-title');
         const descEl = document.getElementById('fw-desc');
+        const cardEl = document.getElementById('fw-main-card') || workSection.querySelector('.fw-card');
 
         const projectsData = [
           {
             title: "IFG Life Insurance Mobile App",
             desc: "Led frontend development for Indonesia's state-owned insurance holding platform, serving policyholders nationwide with scalable React architecture.",
-            counter: "01 / 04"
+            counter: "01 / 03"
           },
           {
             title: "Dimedika: EHR for Independent Clinics",
-            desc: "Design + Fullstack (Freelance). Electronic health record system for solo doctors &amp; small clinics designed around a 15-minute consultation workflow. Built with Next.js, shadcn/ui, Node.js &amp; MongoDB.",
-            counter: "02 / 04"
+            desc: "Design + Fullstack (Freelance). Electronic health record system for solo doctors & small clinics designed around a 15-minute consultation workflow. Built with Next.js, shadcn/ui, Node.js & MongoDB.",
+            counter: "02 / 03"
           },
           {
             title: "eROSES V2.0: Malaysian Society Registry System",
-            desc: "National Electronic Registration of Societies System for Jabatan Pendaftaran Pertubuhan Malaysia (JPPM), enterprise digital portal &amp; AWS cloud services integration.",
-            counter: "03 / 04"
-          },
-          {
-            title: "Kopi Kita: AI CRM for Small Coffee Shops",
-            desc: "Design + Build (Solo Project). Chat-first AI CRM where shop owners converse directly with customer data. Built with Next.js 15, Supabase, pgvector, Groq LLM &amp; Ant Design.",
-            counter: "04 / 04"
+            desc: "National Electronic Registration of Societies System for Jabatan Pendaftaran Pertubuhan Malaysia (JPPM), enterprise digital portal & AWS cloud services integration.",
+            counter: "03 / 03"
           }
         ];
 
@@ -7564,9 +8140,11 @@
           // Update bottom tab button active state
           tabBtns.forEach((btn, idx) => {
             if (idx === fwCurrentIndex) {
+              btn.classList.add('is-active');
               btn.style.color = "#ffffff";
             } else {
-              btn.style.color = "rgba(255,255,255,0.4)";
+              btn.classList.remove('is-active');
+              btn.style.color = "";
             }
           });
         }
@@ -7576,6 +8154,37 @@
         tabBtns.forEach((btn, idx) => {
           btn.addEventListener('click', () => goToFwSlide(idx));
         });
+
+        // Touch swipe support for mobile & tablet
+        if (cardEl) {
+          let touchStartX = 0;
+          let touchStartY = 0;
+          let touchEndX = 0;
+          let touchEndY = 0;
+
+          cardEl.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches.length > 0) {
+              touchStartX = e.touches[0].clientX;
+              touchStartY = e.touches[0].clientY;
+            }
+          }, { passive: true });
+
+          cardEl.addEventListener('touchend', (e) => {
+            if (e.changedTouches && e.changedTouches.length > 0) {
+              touchEndX = e.changedTouches[0].clientX;
+              touchEndY = e.changedTouches[0].clientY;
+              const diffX = touchEndX - touchStartX;
+              const diffY = touchEndY - touchStartY;
+              if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX < 0) {
+                  goToFwSlide(fwCurrentIndex + 1);
+                } else {
+                  goToFwSlide(fwCurrentIndex - 1);
+                }
+              }
+            }
+          }, { passive: true });
+        }
       }
 
       // 10. LET'S COLLABORATE SPOTLIGHT & SCROLL ANIMATION (#contact)
@@ -7613,17 +8222,11 @@
       // 11. LENIS SMOOTH SCROLL + GSAP SCROLLTRIGGER REVEAL ENGINE
       if (typeof Lenis !== 'undefined') {
         const lenis = new Lenis({
-          duration: 1.2,
+          duration: 0.9,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           smoothWheel: true,
-          touchMultiplier: 1.2
+          touchMultiplier: 1.0
         });
-
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
 
         if (typeof ScrollTrigger !== 'undefined') {
           lenis.on('scroll', ScrollTrigger.update);
@@ -7631,37 +8234,42 @@
             lenis.raf(time * 1000);
           });
           gsap.ticker.lagSmoothing(0);
+        } else {
+          function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+          }
+          requestAnimationFrame(raf);
         }
       }
 
       // GSAP SCROLLTRIGGER UNIVERSAL REVEAL FOR SECTION TITLES & CARDS
       if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        // Animate section headers (h1, h2, h3) & elements with data-reveal="true" (excluding #playground)
+        // Animate section headers (excluding #playground and #about)
         const titles = document.querySelectorAll('main section h2, main section h1, main section .section-title, [data-reveal="true"]');
         titles.forEach((title) => {
-          if (title.closest('#playground')) return; // Skip playground section
+          if (title.closest('#playground') || title.closest('#about')) return;
           gsap.fromTo(title,
-            { y: 50, opacity: 0 },
+            { y: 35, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.9,
-              ease: "power3.out",
+              duration: 0.8,
+              ease: "power2.out",
               scrollTrigger: {
                 trigger: title,
                 start: "top 88%",
-                toggleActions: "play reverse play reverse"
+                toggleActions: "play none none none",
+                once: true
               }
             }
           );
         });
 
-        // Staggered reveal for cards and item lists across sections (excluding #playground)
+        // Staggered reveal for cards and item lists (clean non-conflicting groups)
         const staggerGroups = [
-          { container: '.marquee-track', items: '.marquee-group' },
-          { container: '#about .about-intro', items: 'button' },
           { container: '#work', items: 'div[data-cursor="view"]' },
-          { container: '#web .wd-list', items: 'a' },
+          { container: '#web .tech-accordion', items: '.tech-accordion-item' },
           { container: '#performance .perf-stage', items: '.perf-card' }
         ];
 
@@ -7671,17 +8279,18 @@
             const targets = parent.querySelectorAll(group.items);
             if (targets.length > 0) {
               gsap.fromTo(targets,
-                { y: 45, opacity: 0 },
+                { y: 35, opacity: 0 },
                 {
                   y: 0,
                   opacity: 1,
-                  duration: 0.85,
-                  stagger: 0.12,
-                  ease: "power3.out",
+                  duration: 0.75,
+                  stagger: 0.1,
+                  ease: "power2.out",
                   scrollTrigger: {
                     trigger: parent,
                     start: "top 82%",
-                    toggleActions: "play reverse play reverse"
+                    toggleActions: "play none none none",
+                    once: true
                   }
                 }
               );
